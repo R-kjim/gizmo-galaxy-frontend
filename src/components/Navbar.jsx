@@ -15,15 +15,19 @@ const Navbar = () => {
       <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center h-16 justify-between">
 
-          <div className="flex items-center space-x-6">
+        <div className="text-2xl font-bold text-white absolute left-8">
+            Gizmo-galaxy
+          </div>
+
+          <div className="hidden md:flex flex-grow justify-center items-center space-x-20">
             <Link to="/deals" className="hover:text-gray-400">Daily Deals</Link>
             <Link to="/products" className="hover:text-gray-400">Products</Link>
             <Link to="/hot-new" className="hover:text-gray-400">Hot & New</Link>
             <Link to="/support" className="hover:text-gray-400">Support</Link>
           </div>
 
-          <div className="flex items-center space-x-6">
-            <Link to="/search" className="hover:text-gray-400">
+          <div className="flex items-center space-x-10">
+            <Link to="/search" className="hover:text-gray-400 ">
               <FaSearch />
             </Link>
             <Link to="/cart" className="hover:text-gray-400">
@@ -39,7 +43,7 @@ const Navbar = () => {
         </div>
 
         {isMobileMenuOpen && (
-          <div className="md:hidden mt-2">
+          <div className="md:hidden mt-2 text-center">
             <Link to="/deals" className="block py-2 hover:text-gray-400">Daily Deals</Link>
             <Link to="/products" className="block py-2 hover:text-gray-400">Products</Link>
             <Link to="/hot-new" className="block py-2 hover:text-gray-400">Hot & New</Link>
