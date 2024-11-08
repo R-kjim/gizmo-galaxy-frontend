@@ -1,5 +1,6 @@
 import React from 'react'
 import { Route, Routes } from 'react-router-dom'
+import Navbar from './components/Navbar'
 import Homepage from './components/Homepage'
 import Dashboard from './components/admin/Dashboard'
 import Admin from './components/admin/Admin'
@@ -13,6 +14,8 @@ import Cart from './components/client/Cart'
 
 const App = () => {
   return (
+    <>
+    <Navbar/>
     <Routes>
       <Route path='/' element={<Homepage />}/>
       <Route path='/admin' element={<Admin />}>
@@ -27,6 +30,7 @@ const App = () => {
       <Route path='/signup' element={<Signup />}/>
       <Route path='/cart' element={<Cart />}/>
     </Routes>
+    </>
   )
 }
 
