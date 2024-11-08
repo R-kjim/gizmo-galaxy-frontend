@@ -11,11 +11,17 @@ import ProductCard from './components/client/ProductCard'
 import Login from './components/Login'
 import Signup from './components/Signup'
 import Cart from './components/client/Cart'
+import Footer from './components/Homepage/Footer'
 
 const App = () => {
   return (
     <>
     <Navbar/>
+    {/* <Routes>
+    <Route path='/' element={<Homepage />}/>
+
+    </Routes> */}
+    <div className='mt-16'>
     <Routes>
       <Route path='/' element={<Homepage />}/>
       <Route path='/admin' element={<Admin />}>
@@ -30,6 +36,9 @@ const App = () => {
       <Route path='/signup' element={<Signup />}/>
       <Route path='/cart' element={<Cart />}/>
     </Routes>
+    </div>
+    <Footer />
+
     </>
   )
 }

@@ -62,7 +62,7 @@ export default function Footer() {
         </div>
         <div className="mt-12 pt-8 border-t border-gray-800 text-center">
           <p className="text-gray-400 text-sm">
-            &copy; 2023 Gizmo Galaxy. All rights reserved.
+            &copy; {new Date().getFullYear()} Gizmo Galaxy. All rights reserved.
           </p>
         </div>
       </div>
