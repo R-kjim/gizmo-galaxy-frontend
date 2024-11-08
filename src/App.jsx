@@ -1,5 +1,6 @@
 import React from 'react'
 import { Route, Routes } from 'react-router-dom'
+import Navbar from './components/Navbar'
 import Homepage from './components/Homepage'
 import Dashboard from './components/admin/Dashboard'
 import Admin from './components/admin/Admin'
@@ -11,9 +12,17 @@ import Login from './components/Login'
 import Signup from './components/Signup'
 import Cart from './components/client/Cart'
 import ProductManagement from './components/admin/Products'
+import Footer from './components/Homepage/Footer'
 
 const App = () => {
   return (
+    <>
+    <Navbar/>
+    {/* <Routes>
+    <Route path='/' element={<Homepage />}/>
+
+    </Routes> */}
+    <div className='mt-16'>
     <Routes>
       <Route path='/' element={<Homepage />}/>
       <Route path='/admin' element={<Admin />}>
@@ -29,6 +38,10 @@ const App = () => {
       <Route path='/signup' element={<Signup />}/>
       <Route path='/cart' element={<Cart />}/>
     </Routes>
+    </div>
+    <Footer />
+
+    </>
   )
 }
 
