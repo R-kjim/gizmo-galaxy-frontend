@@ -1,6 +1,9 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const ProductManagement = () => {
+
+  const navigate=useNavigate()
   // Dummy data for products
   const initialProducts = [
     {
@@ -43,7 +46,7 @@ const ProductManagement = () => {
     <div className="p-4">
       {/* Controls for adding, searching, and filtering */}
       <div className="flex justify-between items-center mb-4">
-        <button className="bg-green-500 text-white py-2 px-4 rounded-md">
+        <button className="bg-green-500 text-white py-2 px-4 rounded-md" onClick={()=>navigate('/admin/add-product')}>
           Add Product
         </button>
 

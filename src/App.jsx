@@ -13,6 +13,7 @@ import Signup from './components/Signup'
 import Cart from './components/client/Cart'
 import ProductManagement from './components/admin/Products'
 import Footer from './components/Homepage/Footer'
+import AddProduct from './components/admin/AddProduct'
 
 const App = () => {
   return (
@@ -28,6 +29,7 @@ const App = () => {
       <Route path='/admin' element={<Admin />}>
         <Route path='dashboard' element={<Dashboard />}/>
         <Route path='products' element={<ProductManagement />}/>
+        <Route path='add-product' element={<AddProduct />}/>
       </Route>
       <Route path='/client' element={<Client />}>
         <Route path='dashboard' element={<DashboardClient />}/>
