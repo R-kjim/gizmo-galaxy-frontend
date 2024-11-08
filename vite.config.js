@@ -6,10 +6,5 @@ export default defineConfig({
   plugins: [react()],
   optimizeDeps: {
     include: ['swiper']
-  },
-  build: {
-    rollupOptions: {
-      external: ['swiper/react'],
-    },
-  },
+  }
 })
