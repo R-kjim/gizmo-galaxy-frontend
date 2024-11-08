@@ -3,6 +3,7 @@ import { Route, Routes } from 'react-router-dom'
 import Homepage from './components/Homepage'
 import Dashboard from './components/admin/Dashboard'
 import Admin from './components/admin/Admin'
+import Ordermanagement from './components/admin/Ordermanagement'
 import Client from './components/client/Client'
 import DashboardClient from './components/client/Dashboard'
 import ProductListing from './components/client/ProductListing'
@@ -11,11 +12,13 @@ import Login from './components/Login'
 import Signup from './components/Signup'
 import Cart from './components/client/Cart'
 
+
 const App = () => {
   return (
     <Routes>
       <Route path='/' element={<Homepage />}/>
       <Route path='/admin' element={<Admin />}>
+      <Route path='ordermanagement' element ={<Ordermanagement/>}/>
         <Route path='dashboard' element={<Dashboard />}/>
       </Route>
       <Route path='/client' element={<Client />}>
