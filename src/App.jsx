@@ -10,6 +10,7 @@ import ProductCard from './components/client/ProductCard'
 import Login from './components/Login'
 import Signup from './components/Signup'
 import Cart from './components/client/Cart'
+import ProductManagement from './components/admin/Products'
 
 const App = () => {
   return (
@@ -17,6 +18,7 @@ const App = () => {
       <Route path='/' element={<Homepage />}/>
       <Route path='/admin' element={<Admin />}>
         <Route path='dashboard' element={<Dashboard />}/>
+        <Route path='products' element={<ProductManagement />}/>
       </Route>
       <Route path='/client' element={<Client />}>
         <Route path='dashboard' element={<DashboardClient />}/>
