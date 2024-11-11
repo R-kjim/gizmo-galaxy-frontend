@@ -1,27 +1,30 @@
 import { useState } from 'react';
-import { FaTrash } from 'react-icons/fa'; 
+import { FaTrash } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 
 const Cart = () => {
+  const navigate = useNavigate();
+
   // Dummy data for cart items
   const initialCartItems = [
     {
       id: 1,
       name: "Smart TV 55 inch",
-      image: "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSRyftNsb_pnOcdw1gA-lnAWr-O6IUaUXEEvHd_m1T3o0q67PPSp_AI-hybSsl-7tx4xBbzUPxTss2o0sHA_gj-cDL2iLt76FM161ODDJe3BhNaNYr-W8RYVDtJhkdFsA50GIC3tfk&usqp=CAc", // Replace with actual image URL
+      image: "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSRyftNsb_pnOcdw1gA-lnAWr-O6IUaUXEEvHd_m1T3o0q67PPSp_AI-hybSsl-7tx4xBbzUPxTss2o0sHA_gj-cDL2iLt76FM161ODDJe3BhNaNYr-W8RYVDtJhkdFsA50GIC3tfk&usqp=CAc",
       price: 499.99,
       quantity: 1,
     },
     {
       id: 2,
       name: "Laptop HP Pavilion",
-      image: "https://via.placeholder.com/150", 
+      image: "https://via.placeholder.com/150",
       price: 799.99,
       quantity: 2,
     },
     {
       id: 3,
       name: "Wireless Headphones",
-      image: "https://via.placeholder.com/150", 
+      image: "https://via.placeholder.com/150",
       price: 129.99,
       quantity: 1,
     },
@@ -30,7 +33,7 @@ const Cart = () => {
   const [items, setItems] = useState(initialCartItems);
 
   const handleQuantityChange = (id, amount) => {
-    setItems(items.map(item => 
+    setItems(items.map(item =>
       item.id === id ? { ...item, quantity: item.quantity + amount } : item
     ));
   };
@@ -46,53 +49,57 @@ const Cart = () => {
     <div className="flex flex-col lg:flex-row ml-10 mr-10">
       {/* Cart List Section */}
       <div className="w-full lg:w-3/4 p-4">
-        {items.length>0?<div className="space-y-4">
-          {items.map((item) => (
-            <div key={item.id} className="flex bg-white shadow-md rounded-lg p-4">
-              {/* Product Image */}
-              <div className="w-1/4 mr-4">
-                <img src={item.image} alt={item.name} className="w-full h-32 object-cover rounded-md" />
-              </div>
+        {items.length > 0 ? (
+          <div className="space-y-4">
+            {items.map((item) => (
+              <div key={item.id} className="flex bg-white shadow-md rounded-lg p-4">
+                {/* Product Image */}
+                <div className="w-1/4 mr-4">
+                  <img src={item.image} alt={item.name} className="w-full h-32 object-cover rounded-md" />
+                </div>
 
-              {/* Product Details */}
-              <div className="flex-1">
-                <h3 className="text-lg font-semibold">{item.name}</h3>
+                {/* Product Details */}
+                <div className="flex-1">
+                  <h3 className="text-lg font-semibold">{item.name}</h3>
 
-                <div className="flex items-center space-x-2">
-                  {/* Quantity Section */}
-                  <button 
-                    onClick={() => handleQuantityChange(item.id, -1)} 
-                    className="px-2 py-1 bg-gray-300 rounded-md"
-                    disabled={item.quantity <= 1}
-                  >
-                    -
-                  </button>
-                  <input 
-                    type="number" 
-                    value={item.quantity} 
-                    readOnly 
-                    className="w-16 text-center border rounded-md"
+                  <div className="flex items-center space-x-2">
+                    {/* Quantity Section */}
+                    <button
+                      onClick={() => handleQuantityChange(item.id, -1)}
+                      className="px-2 py-1 bg-gray-300 rounded-md"
+                      disabled={item.quantity <= 1}
+                    >
+                      -
+                    </button>
+                    <input
+                      type="number"
+                      value={item.quantity}
+                      readOnly
+                      className="w-16 text-center border rounded-md"
+                    />
+                    <button
+                      onClick={() => handleQuantityChange(item.id, 1)}
+                      className="px-2 py-1 bg-gray-300 rounded-md"
+                    >
+                      +
+                    </button>
+                  </div>
+                </div>
+
+                {/* Delete Icon and Total Price */}
+                <div className="flex flex-col items-end">
+                  <FaTrash
+                    onClick={() => handleDelete(item.id)}
+                    className="text-red-500 cursor-pointer mb-2"
                   />
-                  <button 
-                    onClick={() => handleQuantityChange(item.id, 1)} 
-                    className="px-2 py-1 bg-gray-300 rounded-md"
-                  >
-                    +
-                  </button>
+                  <p className="text-lg font-bold">KSH {(item.price * item.quantity).toFixed(2)}</p>
                 </div>
               </div>
-
-              {/* Delete Icon and Total Price */}
-              <div className="flex flex-col items-end">
-                <FaTrash 
-                  onClick={() => handleDelete(item.id)} 
-                  className="text-red-500 cursor-pointer mb-2"
-                />
-                <p className="text-lg font-bold">KSH {(item.price * item.quantity).toFixed(2)}</p>
-              </div>
-            </div>
-          ))}
-        </div>:<p className='text-center text-red-500'>Cart is empty. Select products to purchase...</p>}
+            ))}
+          </div>
+        ) : (
+          <p className='text-center text-red-500'>Cart is empty. Select products to purchase...</p>
+        )}
       </div>
 
       {/* Order Summary Section */}
@@ -108,7 +115,11 @@ const Cart = () => {
             <span className="font-semibold">KSH {totalPrice.toFixed(2)}</span>
           </div>
         </div>
-        <button className="mt-4 w-full py-2 bg-green-500 text-white font-semibold rounded-md">
+        <button
+          onClick={() => navigate('/client/checkout')}
+          className="mt-4 w-full py-2 bg-green-500 text-white font-semibold rounded-md"
+          disabled={items.length === 0}
+        >
           Proceed to Checkout
         </button>
       </div>

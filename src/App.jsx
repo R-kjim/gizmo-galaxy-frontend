@@ -12,6 +12,7 @@ import Login from './components/Login'
 import Signup from './components/Signup'
 import Cart from './components/client/Cart'
 import Footer from './components/Homepage/Footer'
+import Checkout from './components/client/Checkout'
 
 const App = () => {
   return (
@@ -31,6 +32,7 @@ const App = () => {
         <Route path='dashboard' element={<DashboardClient />}/>
         <Route path='product-listings' element={<ProductListing />}/>
         <Route path='product/:id' element={<ProductCard />}/>
+        <Route path='checkout' element={<Checkout />}/>
       </Route>
       <Route path='/login' element={<Login />}/>
       <Route path='/signup' element={<Signup />}/>
