@@ -1,4 +1,3 @@
-// src/components/client/Dashboard.jsx
 import React, { useState } from "react";
 import { FaShoppingCart, FaCreditCard, FaBoxOpen, FaList } from "react-icons/fa";
 import Cart from "./Cart";
