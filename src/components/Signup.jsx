@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
+
 
 
 const Signup = () => {
@@ -11,7 +13,8 @@ const Signup = () => {
     firstName: '',
     lastName: '',
     email: '',
-    password: ''
+    password: '',
+    role: ''  // Add role to initial values
   };
 
   const validate = (values) => {
@@ -35,6 +38,10 @@ const Signup = () => {
       errors.password = 'Password is required';
     }
 
+    if (!values.role) {
+      errors.role = 'Role is required'; // Validate role
+    }
+
     return errors;
   };
 
@@ -46,7 +53,13 @@ const Signup = () => {
     setSuccessMessage('');
 
     try {
-      const response = await axios.post('/api/signup', values);
+      const response = await axios.post('https://gizmo-galaxy.onrender.com/signup', {
+        first_name: values.firstName,
+        last_name: values.lastName,
+        email: values.email,
+        password: values.password,
+        role: values.role // Include role in the request payload
+      });
       console.log("Response from API:", response); // Log API response
 
       setLoading(false);
@@ -54,8 +67,13 @@ const Signup = () => {
       setSubmitting(false);
     } catch (err) {
       console.error("Error during registration:", err); // Log any errors during registration
+      if (err.response) {
+        console.error("Error response data:", err.response.data); // Log response data for additional insights
+        setError(`Registration failed: ${err.response.data.msg || 'Please try again.'}`);
+      } else {
+        setError('Registration failed. Please try again.');
+      }
       setLoading(false);
-      setError('Registration failed. Please try again.');
       setSubmitting(false);
     }
   };
@@ -116,6 +134,16 @@ const Signup = () => {
                 className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
               <ErrorMessage name="password" component="div" className="text-red-600 text-sm" />
+            </div>
+
+            <div className="mb-4">
+              <label htmlFor="role" className="block text-gray-700">Role</label>
+              <Field as="select" id="role" name="role" className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option value="">Select a Role</option>
+                <option value="admin">Admin</option>
+                <option value="user">User</option>
+              </Field>
+              <ErrorMessage name="role" component="div" className="text-red-600 text-sm" />
             </div>
 
             <button
