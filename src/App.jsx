@@ -12,6 +12,10 @@ import Login from './components/Login'
 import Signup from './components/Signup'
 import Cart from './components/client/Cart'
 import Footer from './components/Homepage/Footer'
+import AdminSidebar from  './components/admin/AdminSidebar'
+  
+
+
 
 const App = () => {
   return (
@@ -25,6 +29,7 @@ const App = () => {
     <Routes>
       <Route path='/' element={<Homepage />}/>
       <Route path='/admin' element={<Admin />}>
+      <Route path="/admin/AdminSidebar" element={<AdminSidebar />} />
         <Route path='dashboard' element={<Dashboard />}/>
       </Route>
       <Route path='/client' element={<Client />}>
