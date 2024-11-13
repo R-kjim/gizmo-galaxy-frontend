@@ -1,11 +1,12 @@
-import React from 'react'
+import React from 'react';
+import { Outlet, Link } from 'react-router-dom';
 
 const Dashboard = () => {
   return (
-    <div>
-      Admin dashboard
+    <div >
+      dashboard here
     </div>
-  )
-}
+  );
+};
 
-export default Dashboard
+export default Dashboard;
