@@ -51,7 +51,7 @@ const SignupForm = () => {
     setSuccessMessage('');
 
     try {
-      const response = await axios.post('http://127.0.0.1:5000/signup', {
+      const response = await axios.post('https://gizmo-galaxy.onrender.com/signup', {
         first_name: values.firstName,
         last_name: values.lastName,
         email: values.email,
