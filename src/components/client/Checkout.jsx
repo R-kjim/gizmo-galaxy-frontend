@@ -6,7 +6,7 @@ const Checkout = () => {
 
   // Fetch cart items from local storage on component mount
   useEffect(() => {
-    const storedCartItems = localStorage.getItem('cartItems');
+    const storedCartItems = localStorage.getItem('cart');
     if (storedCartItems) {
       setCartItems(JSON.parse(storedCartItems));
     }

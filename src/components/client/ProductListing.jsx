@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { AppContext } from "../../AppContextProvider";
 
 const ProductListing = () => {
     const [searchWord,setSearchWord]=useState("") //state to manage search bar content
     const [categoryWord,setCategoryWord]=useState("")//state to manage category dropdown
-
     const navigate=useNavigate()
     const allProducts = [
         {
@@ -98,11 +98,15 @@ const ProductListing = () => {
           category: "Power"
         }
       ];
+    const value=useContext(AppContext)
     const  products=allProducts.filter((product)=>{
         if (searchWord==="" && categoryWord===""){return true}
         else if(searchWord!==""&&categoryWord===""){return product.name.toLowerCase().includes(searchWord.toLowerCase())||product.category===categoryWord}
         else{return product.name.toLowerCase().includes(searchWord.toLowerCase())&&product.category===categoryWord}
     })
+
+    const addToCartFn=value.cartManageFn
+    
   return (
     <div className="flex">
   {/* Sidebar for filters (visible on large screens) */}
@@ -182,9 +186,10 @@ const ProductListing = () => {
           Details
         </button>
         <button
-          className="px-4 py-2 bg-green-500 text-white font-semibold rounded-lg shadow-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
+          className={`px-4 py-2 ${JSON.parse(localStorage.getItem("cart")).find(item=>item.id===product.id)?"bg-red-500 hover:bg-red-600 focus:ring-red-500":"bg-green-500 hover:bg-green-600 focus:ring-green-500"} text-white font-semibold rounded-lg shadow-md  focus:outline-none focus:ring-2  focus:ring-opacity-50`}
+          onClick={()=>addToCartFn(product)}
         >
-          Add to Cart
+          {JSON.parse(localStorage.getItem("cart")).find(item=>item.id===product.id)?"Remove from Cart":"Add to Cart"}
         </button>
       </div>
     </div>

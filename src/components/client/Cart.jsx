@@ -4,41 +4,21 @@ import { useNavigate } from 'react-router-dom';
 
 const Cart = () => {
   const navigate = useNavigate();
+ 
 
-  // Dummy data for cart items
-  const initialCartItems = [
-    {
-      id: 1,
-      name: "Smart TV 55 inch",
-      image: "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSRyftNsb_pnOcdw1gA-lnAWr-O6IUaUXEEvHd_m1T3o0q67PPSp_AI-hybSsl-7tx4xBbzUPxTss2o0sHA_gj-cDL2iLt76FM161ODDJe3BhNaNYr-W8RYVDtJhkdFsA50GIC3tfk&usqp=CAc",
-      price: 499.99,
-      quantity: 1,
-    },
-    {
-      id: 2,
-      name: "Laptop HP Pavilion",
-      image: "https://via.placeholder.com/150",
-      price: 799.99,
-      quantity: 2,
-    },
-    {
-      id: 3,
-      name: "Wireless Headphones",
-      image: "https://via.placeholder.com/150",
-      price: 129.99,
-      quantity: 1,
-    },
-  ];
-
-  const [items, setItems] = useState(initialCartItems);
+  const [items, setItems] = useState(localStorage.getItem("cart")?JSON.parse(localStorage.getItem("cart")): []);
 
   const handleQuantityChange = (id, amount) => {
     setItems(items.map(item =>
       item.id === id ? { ...item, quantity: item.quantity + amount } : item
     ));
+    localStorage.setItem('cart',JSON.stringify(items.map(item =>
+      item.id === id ? { ...item, quantity: item.quantity + amount } : item
+    )))
   };
 
   const handleDelete = (id) => {
+    localStorage.setItem('cart',JSON.stringify(items.filter(item => item.id !== id)))
     setItems(items.filter(item => item.id !== id));
   };
 

@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { AppContext } from '../../AppContextProvider';
 
 // Dummy product data to simulate fetching from an API
 const products = [
@@ -56,7 +57,8 @@ const ProductCard = () => {
     console.log(`Proceed to buy ${product.name}`);
     // Add logic for navigation or checkout process
   };
-
+  const value=useContext(AppContext)
+  const addToCartFn=value.cartManageFn
   return (
     <div className="max-w-6xl mx-auto p-6 bg-white shadow-md rounded-md my-10">
       <div className="flex flex-col md:flex-row items-start">
@@ -97,12 +99,12 @@ const ProductCard = () => {
           </ul>
 
           <div className="space-x-4">
-            <button 
-              onClick={handleAddToCart} 
-              className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md shadow-md"
-            >
-              Add to Cart
-            </button>
+          <button
+            className={`px-4 py-2 ${JSON.parse(localStorage.getItem("cart")).find(item=>item.id===product.id)?"bg-red-500 hover:bg-red-600 focus:ring-red-500":"bg-green-500 hover:bg-green-600 focus:ring-green-500"} text-white font-semibold rounded-lg shadow-md  focus:outline-none focus:ring-2  focus:ring-opacity-50`}
+            onClick={()=>addToCartFn(product)}
+          >
+            {JSON.parse(localStorage.getItem("cart")).find(item=>item.id===product.id)?"Remove from Cart":"Add to Cart"}
+          </button>
             <button 
               onClick={handleBuyNow} 
               className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md shadow-md"
