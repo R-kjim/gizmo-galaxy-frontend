@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 
-const SignupForm = () => {
+
+
+const Signup = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
@@ -147,7 +149,7 @@ const SignupForm = () => {
             <button
               type="submit"
               disabled={isSubmitting || loading}
-              className={`w-full py-3 px-4 bg-blue-500 text-white font-bold rounded-md ${loading || isSubmitting ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-600'}`}
+              className={`w-full py-3 px-4 bg-gray-900 text-white font-bold rounded-md ${loading || isSubmitting ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-600'}`}
             >
               {loading || isSubmitting ? 'Signing Up...' : 'Sign Up'}
             </button>
@@ -158,4 +160,4 @@ const SignupForm = () => {
   );
 };
 
-export default SignupForm;
+export default Signup;
