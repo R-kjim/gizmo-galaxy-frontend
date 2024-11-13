@@ -156,31 +156,41 @@ const ProductListing = () => {
     </div>
 
     <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 gap-6">
-      {products.map((product) => (
-        <div key={product.id} className="bg-white shadow-md rounded-lg overflow-hidden">
-          <div className="relative">
-            <img src={product.image} alt={product.name} className="w-full h-56 object-cover" />
-            <span className="absolute top-2 right-2 bg-black text-white p-1 rounded-md text-xs">
-              {product.rating} ⭐
-            </span>
-          </div>
-          <div className="p-4" onClick={()=>navigate(`/client/product/${product.id}`)}>
-            <h3 className="font-semibold text-lg">{product.name}</h3>
-            <p className="text-sm text-gray-600">{product.description}</p>
-            <p className="mt-2 text-xl font-bold">${product.price}</p>
-          </div>
-          <div className="flex justify-between items-center m-2">
-            <button className="px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
-            onClick={()=>navigate(`/client/product/${product.id}`)}>
-                Details
-            </button>
-            <button className="px-4 py-2 bg-green-500 text-white font-semibold rounded-lg shadow-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50">
-                Add to Cart
-            </button>
-          </div>
-        </div>
-      ))}
+  {products.map((product) => (
+    <div key={product.id} className="bg-white shadow-md rounded-lg overflow-hidden h-full flex flex-col">
+      {/* Image and Rating */}
+      <div className="relative">
+        <img src={product.image} alt={product.name} className="w-full h-56 object-cover" />
+        <span className="absolute top-2 right-2 bg-black text-white p-1 rounded-md text-xs">
+          {product.rating} ⭐
+        </span>
+      </div>
+
+      {/* Product Details */}
+      <div className="p-4 flex-grow cursor-pointer" onClick={() => navigate(`/client/product/${product.id}`)}>
+        <h3 className="font-semibold text-lg">{product.name}</h3>
+        <p className="text-sm text-gray-600">{product.description}</p>
+        <p className="mt-2 text-xl font-bold">${product.price}</p>
+      </div>
+
+      {/* Buttons */}
+      <div className="flex justify-between items-center mt-auto p-4">
+        <button
+          className="px-4 py-2 bg-gray-900 text-white font-semibold rounded-lg shadow-md hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-opacity-50"
+          onClick={() => navigate(`/client/product/${product.id}`)}
+        >
+          Details
+        </button>
+        <button
+          className="px-4 py-2 bg-green-500 text-white font-semibold rounded-lg shadow-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
+        >
+          Add to Cart
+        </button>
+      </div>
     </div>
+  ))}
+</div>
+
   </div>
 </div>
 

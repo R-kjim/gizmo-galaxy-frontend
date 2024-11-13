@@ -29,7 +29,7 @@ const App = () => {
     <Route path='/' element={<Homepage />}/>
 
     </Routes> */}
-    <div className='mt-16'>
+    <div className='mt-16 min-h-screen'>
     <Routes>
       <Route path='/' element={<Homepage />}/>
       <Route path='/admin' element={<Admin />}>
