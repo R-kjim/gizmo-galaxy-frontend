@@ -20,6 +20,7 @@ import Checkout from './components/client/Checkout'
 import AddProduct from './components/admin/AddProduct'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
+import MyOrders from './components/client/MyOrders'
 
 
 
@@ -46,6 +47,7 @@ const App = () => {
         <Route path='product-listings' element={<ProductListing />}/>
         <Route path='product/:id' element={<ProductCard />}/>
         <Route path='checkout' element={<Checkout />}/>
+        <Route path='my-orders' element={<MyOrders />}/>
       </Route>
       <Route path='/login' element={<Login />}/>
       <Route path='/signup' element={<Signup />}/>

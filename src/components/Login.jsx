@@ -39,7 +39,7 @@ const Login = () => {
     setSuccessMessage('');
 
     try {
-      fetch("https://gizmo-galaxy.onrender.com/login",{
+      fetch("http://127.0.0.1:5000/login",{
         method:"POST",
         headers:{
           "Content-Type":"application/json"
@@ -48,11 +48,15 @@ const Login = () => {
       })
       .then(res=>{
         if(res.ok){return res.json().then(data=>{
+          localStorage.setItem("access_Token",data.access_token)
+          localStorage.setItem("refresh_Token",data.refresh_token)
+          localStorage.setItem("userId",data.user.id)
+          value.setUserId(data.user.id)
           if(data.user.role==="Client"){
-            localStorage.setItem("access_Token",data.access_token)
-            localStorage.setItem("refresh_Token",data.refresh_token)
-            localStorage.setItem("userId",data.user.id)
             navigate('/client/product-listings')
+          }
+          else if (data.user.role==="Admin"){
+            navigate('/admin/add-product')
           }
         })}
         else{return res.json().then(data=>toast.error(data.msg))}

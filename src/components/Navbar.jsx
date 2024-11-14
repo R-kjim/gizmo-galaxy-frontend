@@ -7,6 +7,7 @@ import { AppContext } from '../AppContextProvider';
 const Navbar = () => {
   const navigate=useNavigate()
   const value=useContext(AppContext)
+  const msg="value.userData.msg"
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isHovered,setIsHovered]=useState(false) //state to manage the hovering effect functionality
 
@@ -15,7 +16,7 @@ const Navbar = () => {
   };
   
   return (
-    <nav className="bg-gray-800 text-white fixed top-0 left-0 right-0 z-50">
+    <nav className="bg-gray-800 text-white fixed top-0 left-0 right-0 z-50" onMouseLeave={() => setIsHovered(false)}>
       <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center h-16 justify-between">
 
@@ -38,9 +39,9 @@ const Navbar = () => {
           </div> */}
 
           <div className="flex items-center justify-end space-x-4 sm:space-x-6 md:space-x-10 w-full sm:w-auto">
-            <Link to="/" className="hover:text-gray-400 ">
+            {/* <Link to="/" className="hover:text-gray-400 ">
               <FaSearch />
-            </Link>
+            </Link> */}
             <Link to="/cart" className="relative hover:text-gray-400">
               <FaShoppingCart className="text-xl" />
               <span className="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2 bg-red-500 text-white text-xs font-semibold w-4 h-4 flex items-center justify-center rounded-full">
@@ -53,7 +54,7 @@ const Navbar = () => {
             {isHovered && (
               <div className="absolute top-16 right-2 w-60 bg-gray-800 border border-gray-600 shadow-md rounded-xl p-4">
                 {/* navbar status when logged out */}
-              {!localStorage.getItem('userId')&&(<><Link 
+              {(value.userData===null)&&<><Link 
                 to='/login' 
                 className="block text-white font-medium cursor-pointer hover:text-blue-400 hover:bg-gray-700 py-2 px-3 rounded-lg transition-colors duration-200" 
                 onClick={() => setIsHovered(false)}
@@ -66,15 +67,15 @@ const Navbar = () => {
                 onClick={() => setIsHovered(false)}
               >
                 Signup
-              </Link></>)}
+              </Link></>}
               {/* navbar status when logged in */}
               {localStorage.getItem('userId')&&(<>
               <Link 
-                to='/login' 
+                to='/client/my-orders' 
                 className="block text-white font-medium cursor-pointer hover:text-blue-400 hover:bg-gray-700 py-2 px-3 rounded-lg transition-colors duration-200" 
                 onClick={() => setIsHovered(false)}
               >
-                My Order
+                My Orders
               </Link>
               <Link 
                 to='/login' 
@@ -100,7 +101,9 @@ const Navbar = () => {
               <Link 
                 to='/' 
                 className="block text-white font-medium cursor-pointer hover:text-blue-400 hover:bg-gray-700 py-2 px-3 rounded-lg transition-colors duration-200 mt-2" 
-                onClick={() => {setIsHovered(false);localStorage.setItem("cart",[])}}
+                onClick={() => {setIsHovered(false);localStorage.setItem('cart',JSON.stringify([]));value.setCartTotals(0);localStorage.removeItem('userId');
+                  localStorage.removeItem("access_Token");localStorage.removeItem("refresh_Token");value.setUserData(null)
+                }}
               >
                 Logout
               </Link></>)}
