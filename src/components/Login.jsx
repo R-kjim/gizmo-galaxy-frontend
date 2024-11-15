@@ -51,6 +51,7 @@ const Login = () => {
           localStorage.setItem("access_Token",data.access_token)
           localStorage.setItem("refresh_Token",data.refresh_token)
           localStorage.setItem("userId",data.user.id)
+          localStorage.setItem('cart',JSON.stringify([]))
           value.setUserId(data.user.id)
           if(data.user.role==="Client"){
             navigate('/client/product-listings')
