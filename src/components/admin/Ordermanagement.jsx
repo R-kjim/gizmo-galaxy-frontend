@@ -1,5 +1,6 @@
 
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
+import { AppContext } from '../../AppContextProvider';
 
 const dummyOrders = [
     { id: 1, customer: 'Alice Johnson', date: '2023-11-01', status: 'Pending', totalAmount: 150.00, items: [{ id: 1, name: 'Laptop', price: 120.00 }, { id: 2, name: 'Mouse', price: 30.00 }] },
@@ -8,10 +9,11 @@ const dummyOrders = [
 ];
 
 const OrderManagement = () => {
-    const [orders, setOrders] = useState(dummyOrders);
-    const [filteredOrders, setFilteredOrders] = useState(dummyOrders);
+    const value=useContext(AppContext)
+    const orders=value.allOrders
+    // const [orders, setOrders] = useState();
+    const [filteredOrders, setFilteredOrders] = useState(value.allOrders);
     const [selectedOrder, setSelectedOrder] = useState(null);
-
     const handleFilter = (criteria) => {
         const filtered = orders.filter(order => {
             const isStatusMatch = !criteria.status || order.status === criteria.status;
@@ -44,7 +46,7 @@ const OrderManagement = () => {
 
     return (
         <div className="p-6 space-y-6">
-            <h1 className="text-2xl font-semibold">Order Section</h1>
+            <h1 className="text-2xl font-semibold">Order Management</h1>
             <OrderFilters onFilter={handleFilter} onClear={handleClear} />
             <OrderTable orders={filteredOrders} onSelectOrder={setSelectedOrder} />
             {selectedOrder && <OrderDetail order={selectedOrder} onUpdateOrder={handleUpdateOrder} />}
@@ -94,7 +96,7 @@ const OrderFilters = ({ onFilter, onClear }) => {
             <select name="status" className="px-4 py-2 border rounded-lg w-full" onChange={handleChange} value={criteria.status}>
                 <option value="">All Statuses</option>
                 <option value="Pending">Pending</option>
-                <option value="Shipped">Shipped</option>
+                <option value="Shipped">Dispatched</option>
                 <option value="Delivered">Delivered</option>
             </select>
             <div className="font-semibold text-lg">Filter by Date Range</div>
@@ -125,10 +127,10 @@ const OrderTable = ({ orders, onSelectOrder }) => (
             {orders.map(order => (
                 <tr key={order.id} className={`border-b hover:bg-gray-50 ${order.status === 'Delivered' ? 'bg-green-100' : order.status === 'Pending' ? 'bg-yellow-100' : 'bg-blue-100'}`}>
                     <td className="py-3 px-6">{order.id}</td>
-                    <td className="py-3 px-6">{order.customer}</td>
+                    <td className="py-3 px-6">{`${order.user.first_name} ${order.user.last_name}`}</td>
                     <td className="py-3 px-6">{new Date(order.date).toLocaleDateString()}</td>
                     <td className="py-3 px-6">{order.status}</td>
-                    <td className="py-3 px-6">${order.totalAmount.toFixed(2)}</td>
+                    <td className="py-3 px-6">${order.amount.toFixed(2)}</td>
                     <td className="py-3 px-6">
                         <button onClick={() => onSelectOrder(order)} className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">View</button>
                     </td>
@@ -142,29 +144,39 @@ const OrderDetail = ({ order, onUpdateOrder }) => {
     const handleAction = (action) => {
         const updatedOrder = { ...order };
 
-        if (action === 'Mark as Shipped') updatedOrder.status = 'Shipped';
-        if (action === 'Issue Refund') {
-            updatedOrder.status = 'Refunded';
-            updatedOrder.totalAmount = 0;
-        }
-        if (action === 'Cancel Order') updatedOrder.status = 'Canceled';
+        if (action === 'Mark as Dispatched') {
+            fetch(`http://127.0.0.1:5000/order/${order.id}`,{
+                method:"PATCH",
+                headers:{
+                    "Content-Type":"application/json",
+                    "Authorization":`Bearer ${localStorage.getItem("access_Token")}`
+                },
+                body:JSON.stringify({"status":"Dispatched"})
+            })
+            .then(res=>res.json())
+        };
+        // if (action === 'Issue Refund') {
+        //     updatedOrder.status = 'Refunded';
+        //     updatedOrder.totalAmount = 0;
+        // }
+        // if (action === 'Cancel Order') updatedOrder.status = 'Canceled';
 
-        onUpdateOrder(updatedOrder);
+        // onUpdateOrder(updatedOrder);
     };
 
     return (
         <div className="mt-8 p-6 bg-white border rounded-lg shadow-md space-y-6">
             <h2 className="text-xl font-semibold">Order Details - {order.id}</h2>
-            <p><strong>Customer:</strong> {order.customer}</p>
+            <p><strong>Customer:</strong> {`${order.user.first_name} ${order.user.last_name}`}</p>
             <p><strong>Date:</strong> {new Date(order.date).toLocaleDateString()}</p>
             <p><strong>Status:</strong> {order.status}</p>
             <ul className="list-disc pl-6">
-                {order.items.map(item => (
-                    <li key={item.id}>{item.name} - ${item.price.toFixed(2)}</li>
+                {order.products.map(item => (
+                    <li key={item.product_id}>{item.product.name} - ${item.selling_price}</li>
                 ))}
             </ul>
             <div className="space-x-4">
-                {['Mark as Shipped', 'Issue Refund', 'Cancel Order'].map(action => (
+                {['Mark as Dispatched', 'Issue Refund', 'Cancel Order'].map(action => (
                     <button
                         key={action}
                         onClick={() => handleAction(action)}

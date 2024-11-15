@@ -53,7 +53,7 @@ const Signup = () => {
     setSuccessMessage('');
 
     try {
-      const response = await axios.post('https://gizmo-galaxy.onrender.com/signup', {
+      const response = await axios.post('http://127.0.0.1:5000/signup', {
         first_name: values.firstName,
         last_name: values.lastName,
         email: values.email,
@@ -141,7 +141,7 @@ const Signup = () => {
               <Field as="select" id="role" name="role" className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                 <option value="">Select a Role</option>
                 <option value="admin">Admin</option>
-                <option value="user">User</option>
+                <option value="Client">User</option>
               </Field>
               <ErrorMessage name="role" component="div" className="text-red-600 text-sm" />
             </div>

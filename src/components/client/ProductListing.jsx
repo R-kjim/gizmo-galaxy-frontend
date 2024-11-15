@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { AppContext } from "../../AppContextProvider";
 
 const ProductListing = () => {
     const [searchWord,setSearchWord]=useState("") //state to manage search bar content
     const [categoryWord,setCategoryWord]=useState("")//state to manage category dropdown
-
     const navigate=useNavigate()
-    const allProducts = [
+    const allProducts1 = [
         {
           id: 1,
           name: "Samsung 55-inch 4K UHD Smart TV",
@@ -98,11 +98,16 @@ const ProductListing = () => {
           category: "Power"
         }
       ];
+    const value=useContext(AppContext)
+    const allProducts=value.products
     const  products=allProducts.filter((product)=>{
         if (searchWord==="" && categoryWord===""){return true}
         else if(searchWord!==""&&categoryWord===""){return product.name.toLowerCase().includes(searchWord.toLowerCase())||product.category===categoryWord}
-        else{return product.name.toLowerCase().includes(searchWord.toLowerCase())&&product.category===categoryWord}
+        else{return product.name.toLowerCase().includes(searchWord.toLowerCase())&&product.category.name===categoryWord}
     })
+
+    const addToCartFn=value.cartManageFn
+    
   return (
     <div className="flex">
   {/* Sidebar for filters (visible on large screens) */}
@@ -146,11 +151,9 @@ const ProductListing = () => {
       <div className="ml-4 w-1/2">
         <select className="px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full" value={categoryWord} onChange={(e)=>setCategoryWord(e.target.value)}>
           <option value="">All Categories</option>
-          <option value="TVs">TVs</option>
-          <option value="Laptops">Laptops</option>
-          <option value="Phones">Phones</option>
-          <option value="Audio">Audio</option>
-          <option value="Power">Power</option>
+          {value.categories.map((category)=>{
+            return (<option key={category.id}>{category.name}</option>)
+          })}
         </select>
       </div>
     </div>
@@ -160,17 +163,17 @@ const ProductListing = () => {
     <div key={product.id} className="bg-white shadow-md rounded-lg overflow-hidden h-full flex flex-col">
       {/* Image and Rating */}
       <div className="relative">
-        <img src={product.image} alt={product.name} className="w-full h-56 object-cover" />
-        <span className="absolute top-2 right-2 bg-black text-white p-1 rounded-md text-xs">
+        <img src={product.image_url[0].image_url} alt={product.name} className="w-full h-56 object-cover" />
+        {/* <span className="absolute top-2 right-2 bg-black text-white p-1 rounded-md text-xs">
           {product.rating} ⭐
-        </span>
+        </span> */}
       </div>
 
       {/* Product Details */}
       <div className="p-4 flex-grow cursor-pointer" onClick={() => navigate(`/client/product/${product.id}`)}>
         <h3 className="font-semibold text-lg">{product.name}</h3>
         <p className="text-sm text-gray-600">{product.description}</p>
-        <p className="mt-2 text-xl font-bold">${product.price}</p>
+        <p className="mt-2 text-xl font-bold">KSH {product.selling_price}</p>
       </div>
 
       {/* Buttons */}
@@ -182,9 +185,10 @@ const ProductListing = () => {
           Details
         </button>
         <button
-          className="px-4 py-2 bg-green-500 text-white font-semibold rounded-lg shadow-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
+          className={`px-4 py-2 ${JSON.parse(localStorage.getItem("cart")).find(item=>item.id===product.id)?"bg-red-500 hover:bg-red-600 focus:ring-red-500":"bg-green-500 hover:bg-green-600 focus:ring-green-500"} text-white font-semibold rounded-lg shadow-md  focus:outline-none focus:ring-2  focus:ring-opacity-50`}
+          onClick={()=>addToCartFn(product)}
         >
-          Add to Cart
+          {JSON.parse(localStorage.getItem("cart")).find(item=>item.id===product.id)?"Remove from Cart":"Add to Cart"}
         </button>
       </div>
     </div>

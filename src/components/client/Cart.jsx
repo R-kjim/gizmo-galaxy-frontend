@@ -1,49 +1,31 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { FaTrash } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
+import { AppContext } from '../../AppContextProvider';
 
 const Cart = () => {
   const navigate = useNavigate();
+ const value=useContext(AppContext)
 
-  // Dummy data for cart items
-  const initialCartItems = [
-    {
-      id: 1,
-      name: "Smart TV 55 inch",
-      image: "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSRyftNsb_pnOcdw1gA-lnAWr-O6IUaUXEEvHd_m1T3o0q67PPSp_AI-hybSsl-7tx4xBbzUPxTss2o0sHA_gj-cDL2iLt76FM161ODDJe3BhNaNYr-W8RYVDtJhkdFsA50GIC3tfk&usqp=CAc",
-      price: 499.99,
-      quantity: 1,
-    },
-    {
-      id: 2,
-      name: "Laptop HP Pavilion",
-      image: "https://via.placeholder.com/150",
-      price: 799.99,
-      quantity: 2,
-    },
-    {
-      id: 3,
-      name: "Wireless Headphones",
-      image: "https://via.placeholder.com/150",
-      price: 129.99,
-      quantity: 1,
-    },
-  ];
-
-  const [items, setItems] = useState(initialCartItems);
+  const [items, setItems] = useState(localStorage.getItem("cart")?JSON.parse(localStorage.getItem("cart")): []);
 
   const handleQuantityChange = (id, amount) => {
     setItems(items.map(item =>
       item.id === id ? { ...item, quantity: item.quantity + amount } : item
     ));
+    localStorage.setItem('cart',JSON.stringify(items.map(item =>
+      item.id === id ? { ...item, quantity: item.quantity + amount } : item
+    )))
   };
 
   const handleDelete = (id) => {
+    localStorage.setItem('cart',JSON.stringify(items.filter(item => item.id !== id)))
     setItems(items.filter(item => item.id !== id));
+    value.setCartTotals(value.cartTotals-1)
   };
 
   // Calculate total price
-  const totalPrice = items.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+  const totalPrice = items.reduce((acc, item) => acc + (item.selling_price * item.quantity), 0);
 
   return (
     <div className="flex flex-col lg:flex-row ml-10 mr-10">
@@ -55,7 +37,7 @@ const Cart = () => {
               <div key={item.id} className="flex bg-white shadow-md rounded-lg p-4">
                 {/* Product Image */}
                 <div className="w-1/4 mr-4">
-                  <img src={item.image} alt={item.name} className="w-full h-32 object-cover rounded-md" />
+                  <img src={item.image_url[0].image_url} alt={item.name} className="w-full h-32 object-cover rounded-md" />
                 </div>
 
                 {/* Product Details */}
@@ -92,7 +74,7 @@ const Cart = () => {
                     onClick={() => handleDelete(item.id)}
                     className="text-red-500 cursor-pointer mb-2"
                   />
-                  <p className="text-lg font-bold">KSH {(item.price * item.quantity).toFixed(2)}</p>
+                  <p className="text-lg font-bold">KSH {(item.selling_price * item.quantity).toFixed(2)}</p>
                 </div>
               </div>
             ))}
