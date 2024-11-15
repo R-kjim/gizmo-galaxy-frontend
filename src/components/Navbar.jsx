@@ -7,7 +7,6 @@ import { AppContext } from '../AppContextProvider';
 const Navbar = () => {
   const navigate=useNavigate()
   const value=useContext(AppContext)
-  const msg="value.userData.msg"
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isHovered,setIsHovered]=useState(false) //state to manage the hovering effect functionality
 
@@ -24,24 +23,34 @@ const Navbar = () => {
             Gizmo-galaxy
           </div>
 
+          {localStorage.getItem('userId')&&value.userData.role==="Client"&&
           <div className="hidden md:flex flex-grow justify-center items-center space-x-20 md:space-x-6">
             <Link to="/" className="hover:text-gray-400">Daily Deals</Link>
             <Link to="/client/product-listings" className="hover:text-gray-400">Products</Link>
             <Link to="/" className="hover:text-gray-400">Hot & New</Link>
             <Link to="/" className="hover:text-gray-400">Support</Link>
-          </div>
+          </div>}
 
-          {/* <div className="hidden sm:flex flex-grow justify-center items-center space-x-20">
+          {value.userData.length===0 &&
+            <div className="hidden md:flex flex-grow justify-center items-center space-x-20 md:space-x-6">
             <Link to="/" className="hover:text-gray-400">Daily Deals</Link>
             <Link to="/client/product-listings" className="hover:text-gray-400">Products</Link>
             <Link to="/" className="hover:text-gray-400">Hot & New</Link>
             <Link to="/" className="hover:text-gray-400">Support</Link>
-          </div> */}
+          </div>
+          }
 
+
+          {localStorage.getItem('userId')&&value.userData.role==="Admin" && <div className="hidden sm:flex flex-grow justify-center items-center space-x-20">
+            <Link to="/" className="hover:text-gray-400">Dashboard</Link>
+            <Link to="/admin/products" className="hover:text-gray-400">Products</Link>
+            <Link to="/admin/ordermanagement" className="hover:text-gray-400">Orders</Link>
+            <Link to="/" className="hover:text-gray-400">Reports & Analytics</Link>
+          </div>}
+
+          {
+           !(localStorage.getItem('userId')&&value.userData.role==="Admin") &&
           <div className="flex items-center justify-end space-x-4 sm:space-x-6 md:space-x-10 w-full sm:w-auto">
-            {/* <Link to="/" className="hover:text-gray-400 ">
-              <FaSearch />
-            </Link> */}
             <Link to="/cart" className="relative hover:text-gray-400">
               <FaShoppingCart className="text-xl" />
               <span className="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2 bg-red-500 text-white text-xs font-semibold w-4 h-4 flex items-center justify-center rounded-full">
@@ -54,7 +63,7 @@ const Navbar = () => {
             {isHovered && (
               <div className="absolute top-16 right-2 w-60 bg-gray-800 border border-gray-600 shadow-md rounded-xl p-4">
                 {/* navbar status when logged out */}
-              {(value.userData===null)&&<><Link 
+              {(value.userData.length===0)&&<><Link 
                 to='/login' 
                 className="block text-white font-medium cursor-pointer hover:text-blue-400 hover:bg-gray-700 py-2 px-3 rounded-lg transition-colors duration-200" 
                 onClick={() => setIsHovered(false)}
@@ -69,7 +78,7 @@ const Navbar = () => {
                 Signup
               </Link></>}
               {/* navbar status when logged in */}
-              {localStorage.getItem('userId')&&(<>
+              {localStorage.getItem('userId')&&value.userData.role==="Client"&&(<>
               <Link 
                 to='/client/my-orders' 
                 className="block text-white font-medium cursor-pointer hover:text-blue-400 hover:bg-gray-700 py-2 px-3 rounded-lg transition-colors duration-200" 
@@ -102,7 +111,7 @@ const Navbar = () => {
                 to='/' 
                 className="block text-white font-medium cursor-pointer hover:text-blue-400 hover:bg-gray-700 py-2 px-3 rounded-lg transition-colors duration-200 mt-2" 
                 onClick={() => {setIsHovered(false);localStorage.setItem('cart',JSON.stringify([]));value.setCartTotals(0);localStorage.removeItem('userId');
-                  localStorage.removeItem("access_Token");localStorage.removeItem("refresh_Token");value.setUserData(null)
+                  localStorage.removeItem("access_Token");localStorage.removeItem("refresh_Token");value.setUserData([])
                 }}
               >
                 Logout
@@ -112,7 +121,19 @@ const Navbar = () => {
             <button className="md:hidden" onClick={toggleMobileMenu}>
               {isMobileMenuOpen ? <FaTimes /> : <FaBars />}
             </button>
-          </div>
+          </div>}
+
+          {localStorage.getItem('userId')&&value.userData.role==="Admin" &&
+            <div className="flex items-center justify-end space-x-4 sm:space-x-6 md:space-x-10 w-full sm:w-auto">
+               {/* <Link to="/" className="hover:text-gray-400">Profile</Link> */}
+               <Link to="/login" className="hover:text-gray-400"
+               onClick={() => {setIsHovered(false);localStorage.setItem('cart',JSON.stringify([]));value.setCartTotals(0);localStorage.removeItem('userId');
+                localStorage.removeItem("access_Token");localStorage.removeItem("refresh_Token");value.setUserData([])
+              }}
+               >Logout</Link>
+            </div>
+
+          }
         </div>
 
         {isMobileMenuOpen && (
