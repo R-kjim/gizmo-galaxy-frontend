@@ -55,31 +55,17 @@ const OrderManagement = () => {
 const OrderFilters = ({ onFilter, onClear }) => {
     const [criteria, setCriteria] = useState({ status: '', customer: '', dateRange: { start: '', end: '' } });
 
-    const handleFilter = () => {
-        const { start, end } = criteria.dateRange;
-        if (start && end && new Date(start) > new Date(end)) {
-            alert("Start date cannot be after end date.");
-            return;
-        }
-        onFilter(criteria);
-    };
-
     const handleChange = (e) => {
         const { name, value } = e.target;
+        const newCriteria = {...criteria};
+
         if (name === "start" || name === "end") {
-            setCriteria(prev => ({
-                ...prev,
-                dateRange: {
-                    ...prev.dateRange,
-                    [name]: value
-                }
-            }));
-        } else {
-            setCriteria((prev) => ({
-                ...prev,
-                [name]: value
-            }));
+            newCriteria.dateRange[name] = value;
+        }else{
+            newCriteria[name]=value;
         }
+        setCriteria(newCriteria);
+        onFilter(newCriteria);
     };
 
     const handleClear = () => {
@@ -105,7 +91,6 @@ const OrderFilters = ({ onFilter, onClear }) => {
                    <input type="date" name="end" className="px-4 py-2 border rounded-lg w-full" onChange={handleChange} value={criteria.dateRange.end} />
             </div>
             <div className="flex space-x-4">
-                <button onClick={handleFilter} className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Apply</button>
                 <button onClick={handleClear} className="px-6 py-2 bg-gray-400 text-white rounded-lg hover:bg-gray-500">Clear</button>
             </div>
         </div>
@@ -179,4 +164,3 @@ const OrderDetail = ({ order, onUpdateOrder }) => {
 };
 
 export default OrderManagement;
-
