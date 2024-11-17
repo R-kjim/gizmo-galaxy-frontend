@@ -1,115 +1,120 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { AppContext } from '../../AppContextProvider';
 
 const ProductManagement = () => {
-
-  const navigate=useNavigate()
-  // Dummy data for products
-  const initialProducts = [
-    {
-      id: 1,
-      name: "Smart TV 55 inch",
-      purchasePrice: 300,
-      sellingPrice: 500,
-      stock: 10,
-      category: "TVs",
-    },
-    {
-      id: 2,
-      name: "Laptop HP Pavilion",
-      purchasePrice: 600,
-      sellingPrice: 800,
-      stock: 5,
-      category: "Laptops",
-    },
-    {
-      id: 3,
-      name: "Wireless Headphones",
-      purchasePrice: 50,
-      sellingPrice: 100,
-      stock: 15,
-      category: "Audio",
-    },
-  ];
-
-  const [products, setProducts] = useState(initialProducts);
-  const [selectedCategory, setSelectedCategory] = useState("");
-  const [searchTerm, setSearchTerm] = useState("");
+  const navigate = useNavigate();
+  const { categories, products } = useContext(AppContext);
+  const [selectedCategory, setSelectedCategory] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedProduct, setSelectedProduct] = useState(null); // Manage selected product for detail view
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Manage sidebar visibility
 
   // Filter products based on category and search term
-  const filteredProducts = products.filter((product) =>
-    product.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
-    (selectedCategory === "" || product.category === selectedCategory)
+  const filteredProducts = products.filter(
+    (product) =>
+      product.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
+      (selectedCategory === '' || product.category.name === selectedCategory)
   );
 
-  return (
-    <div className="p-4">
-      {/* Controls for adding, searching, and filtering */}
-      <div className="flex justify-between items-center mb-4">
-        <button className="bg-green-500 text-white py-2 px-4 rounded-md" onClick={()=>navigate('/admin/add-product')}>
-          Add Product
-        </button>
+  const handleViewProduct = (e,product) => {
+    console.log(e.target.value)
+    setSelectedProduct(product);
+    setIsSidebarOpen(true);
+  };
 
-        <div className="flex space-x-4">
-          <input
-            type="text"
-            placeholder="Search products"
-            className="border px-4 py-2 rounded-md"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-          <select
-            className="border px-4 py-2 rounded-md"
-            value={selectedCategory}
-            onChange={(e) => setSelectedCategory(e.target.value)}
+  return (
+    <div className="flex" onClick={()=>setIsSidebarOpen(false)}>
+      <div className="p-4 w-full">
+        {/* Controls for adding, searching, and filtering */}
+        <div className="flex justify-between items-center mb-4 w-full">
+          <button
+            className="bg-green-500 text-white px-6 py-2 rounded-md text-sm font-medium hover:bg-green-600"
+            onClick={() => navigate('/admin/add-product')}
           >
-            <option value="">All Categories</option>
-            <option value="TVs">TVs</option>
-            <option value="Laptops">Laptops</option>
-            <option value="Audio">Audio</option>
-            <option value="Phones">Phones</option>
-            <option value="Power">Power</option>
-          </select>
+            Add Product
+          </button>
+
+          <div className="flex space-x-4 w-full">
+            <input
+              type="text"
+              placeholder="Search products"
+              className="border px-4 py-2 rounded-md w-full"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+            <select
+              className="border px-4 py-2 rounded-md w-full"
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value)}
+            >
+              <option value="">All Categories</option>
+              {categories.map((category) => {
+                return (
+                  <option value={category.name} key={category.name}>
+                    {category.name}
+                  </option>
+                );
+              })}
+            </select>
+          </div>
         </div>
+
+        {/* Product Table */}
+        <table className="w-full border-collapse bg-white shadow-md rounded-md">
+          <thead>
+            <tr className="bg-gray-100">
+              <th className="p-4 text-center">Actions</th>
+              <th className="p-4 text-center">Product Name</th>
+              <th className="p-4 text-center">Unit Purchase Price</th>
+              <th className="p-4 text-center">Unit Selling Price</th>
+              <th className="p-4 text-center">Current Stock</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredProducts.map((product) => (
+              <tr key={product.id} className="border-t hover:bg-gray-50">
+                <td className="p-4 text-center">
+                  <select className="border px-2 py-1 rounded-md w-auto max-w-xs" onClick={(e) => handleViewProduct(e,product)}>
+                    <option>Actions</option>
+                    <option >View</option>
+                    <option>Edit</option>
+                    <option>Delete</option>
+                    <option>Add/Edit Stock</option>
+                  </select>
+                </td>
+                <td className="p-4 text-center">{product.name}</td>
+                <td className="p-4 text-center">KSH {product.purchase_price.toFixed(2)}</td>
+                <td className="p-4 text-center">KSH {product.selling_price.toFixed(2)}</td>
+                <td className="p-4 text-center">{product.quantity}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
 
-      {/* Product Table */}
-      <table className="w-full border-collapse bg-white shadow-md rounded-md">
-        <thead>
-          <tr className="bg-gray-100 items-center">
-            <th className="p-4">
-              <input type="checkbox" />
-            </th>
-            <th className="p-4">Actions</th>
-            <th className="p-4">Product Name</th>
-            <th className="p-4">Unit Purchase Price</th>
-            <th className="p-4">Unit Selling Price</th>
-            <th className="p-4">Current Stock</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredProducts.map((product) => (
-            <tr key={product.id} className="border-t">
-              <td className="p-4 text-center">
-                <input type="checkbox" />
-              </td>
-              <td className="p-4">
-                <select className="border px-2 py-1 rounded-md">
-                  <option>Actions</option>
-                  <option>View</option>
-                  <option>Edit</option>
-                  <option>Delete</option>
-                  <option>Add/Edit Stock</option>
-                </select>
-              </td>
-              <td className="p-4">{product.name}</td>
-              <td className="p-4">${product.purchasePrice.toFixed(2)}</td>
-              <td className="p-4">${product.sellingPrice.toFixed(2)}</td>
-              <td className="p-4 text-center">{product.stock}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      {/* Sidebar for Product Details */}
+      {isSidebarOpen && selectedProduct && (
+        <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-end">
+          <div className="bg-white w-96 h-full p-6 overflow-y-auto">
+            <button
+              className="text-red-500 text-xl absolute top-4 right-4"
+              onClick={() => setIsSidebarOpen(false)}
+            >
+              X
+            </button>
+            <h2 className="text-xl font-semibold mb-4">Product Details</h2>
+            <div className="space-y-4">
+              <p><strong>Product Name:</strong> {selectedProduct.name}</p>
+              <p><strong>Description:</strong> {selectedProduct.description}</p>
+              <p><strong>Category:</strong> {selectedProduct.category.name}</p>
+              <p><strong>Unit Purchase Price:</strong> KSH {selectedProduct.purchase_price.toFixed(2)}</p>
+              <p><strong>Unit Selling Price:</strong> KSH {selectedProduct.selling_price.toFixed(2)}</p>
+              <p><strong>Stock Quantity:</strong> {selectedProduct.quantity}</p>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

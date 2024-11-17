@@ -51,10 +51,14 @@ const Login = () => {
           localStorage.setItem("access_Token",data.access_token)
           localStorage.setItem("refresh_Token",data.refresh_token)
           localStorage.setItem("userId",data.user.id)
-          localStorage.setItem('cart',JSON.stringify([]))
           value.setUserId(data.user.id)
-          if(data.user.role==="Client"){
+          if(data.user.role==="Client" && !value.loginCheckout){
+            localStorage.setItem('cart',JSON.stringify([]))
             navigate('/client/product-listings')
+          }
+          if(data.user.role==="Client" && value.loginCheckout){
+            value.setLoginCheckout(false)
+            navigate('/client/checkout')
           }
           else if (data.user.role==="Admin"){
             navigate('/admin/add-product')

@@ -31,7 +31,7 @@ const Navbar = () => {
             <Link to="/" className="hover:text-gray-400">Support</Link>
           </div>}
 
-          {value.userData.length===0 &&
+          {!value.userData.email &&
             <div className="hidden md:flex flex-grow justify-center items-center space-x-20 md:space-x-6">
             <Link to="/" className="hover:text-gray-400">Daily Deals</Link>
             <Link to="/client/product-listings" className="hover:text-gray-400">Products</Link>
@@ -63,7 +63,7 @@ const Navbar = () => {
             {isHovered && (
               <div className="absolute top-16 right-2 w-60 bg-gray-800 border border-gray-600 shadow-md rounded-xl p-4">
                 {/* navbar status when logged out */}
-              {(value.userData.length===0)&&<><Link 
+              {(!value.userData.email)&&<><Link 
                 to='/login' 
                 className="block text-white font-medium cursor-pointer hover:text-blue-400 hover:bg-gray-700 py-2 px-3 rounded-lg transition-colors duration-200" 
                 onClick={() => setIsHovered(false)}
@@ -110,8 +110,8 @@ const Navbar = () => {
               <Link 
                 to='/' 
                 className="block text-white font-medium cursor-pointer hover:text-blue-400 hover:bg-gray-700 py-2 px-3 rounded-lg transition-colors duration-200 mt-2" 
-                onClick={() => {setIsHovered(false);localStorage.setItem('cart',JSON.stringify([]));value.setCartTotals(0);localStorage.removeItem('userId');
-                  localStorage.removeItem("access_Token");localStorage.removeItem("refresh_Token");value.setUserData([])
+                onClick={() => {setIsHovered(false);localStorage.removeItem("cart");localStorage.setItem('cart',JSON.stringify([]));value.setCartTotals(0);localStorage.removeItem('userId');
+                  localStorage.removeItem("access_Token");localStorage.removeItem("refresh_Token");value.setUserData([]);value.setLoginCheckout(false);value.setCartTotals(0)
                 }}
               >
                 Logout

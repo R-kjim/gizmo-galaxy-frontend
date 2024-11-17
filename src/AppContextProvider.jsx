@@ -3,16 +3,18 @@ import React, { createContext, useEffect, useState } from 'react'
 
 export const AppContext=createContext()
 const AppContextProvider = (props) => {
+    const [userId,setUserId]=useState(localStorage.getItem("userId") || "")
     const [cartTotals,setCartTotals]=useState(localStorage.getItem("cart")?JSON.parse(localStorage.getItem("cart")).length: 0)
-    const [userData,setUserData]=useState([])
-    const [userId,setUserId]=useState(localStorage.getItem("userId"))
+    const [userData,setUserData]=useState({})
     const [cartItems,setCartItems]=useState(localStorage.getItem("cart")?JSON.parse(localStorage.getItem("cart")):[]) //state to manage adding of items in the cart
     const [inCart,setInCart]=useState(false)
     const [categories,setCategories]=useState([])
-    const [taxes,SetTaxes]=useState([])
+    const [taxCategories,setTaxCategories]=useState([])
     const [products,setProducts]=useState([])
     const [allOrders,setAllOrders]=useState([])
+    const [loginCheckout,setLoginCheckout]=useState(false) //state to manage loging in and proceed to checkout
 
+    
     //useefect to fetch user data once they are successfully logged in
     useEffect(()=>{
       fetch(`http://127.0.0.1:5000/user/${userId}`,{
@@ -37,7 +39,7 @@ const AppContextProvider = (props) => {
       //fetch tax categories
       fetch("http://127.0.0.1:5000/tax-category")
       .then(res=>res.json())
-      .then(data=>SetTaxes(data))
+      .then(data=>setTaxCategories(data))
       //fetch products
       fetch("http://127.0.0.1:5000/products")
       .then(res=>res.json())
@@ -81,7 +83,8 @@ const AppContextProvider = (props) => {
     }
     const value={
         cartTotals,setCartTotals,userData,setUserData,cartManageFn,cartItems,setCartItems,
-        categories,setCategories,taxes,SetTaxes,products,setProducts,setUserId,allOrders,setAllOrders
+        categories,setCategories,taxCategories,setTaxCategories,products,setProducts,setUserId,allOrders,setAllOrders,
+        loginCheckout,setLoginCheckout
     }
   return (
     <AppContext.Provider value={value}>

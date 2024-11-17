@@ -26,7 +26,6 @@ const Cart = () => {
 
   // Calculate total price
   const totalPrice = items.reduce((acc, item) => acc + (item.selling_price * item.quantity), 0);
-
   return (
     <div className="flex flex-col lg:flex-row ml-10 mr-10">
       {/* Cart List Section */}
@@ -97,13 +96,21 @@ const Cart = () => {
             <span className="font-semibold">KSH {totalPrice.toFixed(2)}</span>
           </div>
         </div>
-        <button
+        {value.userData.email?<button
           onClick={() => navigate('/client/checkout')}
           className="mt-4 w-full py-2 bg-green-500 text-white font-semibold rounded-md"
           disabled={items.length === 0}
         >
           Proceed to Checkout
-        </button>
+        </button>:
+        <button
+        onClick={() => {value.setLoginCheckout(true);navigate('/login')}}
+        className="mt-4 w-full py-2 bg-red-500 text-white font-semibold rounded-md"
+        disabled={items.length === 0}
+      >
+        Login to Checkout
+      </button>
+        }
       </div>
     </div>
   );
