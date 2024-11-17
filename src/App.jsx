@@ -23,6 +23,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import MyOrders from './components/client/MyOrders'
 import CategoriesDisplay from './components/admin/CategoriesDisplay'
 import TaxCategoriesDisplay from './components/admin/Taxes'
+import Users from './components/admin/Users'
 
 
 
@@ -45,6 +46,7 @@ const App = () => {
         <Route path='add-product' element={<AddProduct />}/>
         <Route path='product-categories' element={<CategoriesDisplay />}/>
         <Route path='tax-categories' element={<TaxCategoriesDisplay />}/>
+        <Route path='users' element={<Users />} />
       </Route>
       <Route path='/client' element={<Client />}>
         <Route path='dashboard' element={<DashboardClient />}/>

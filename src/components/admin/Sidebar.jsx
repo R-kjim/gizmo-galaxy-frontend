@@ -4,6 +4,7 @@ import {
   FaFileInvoiceDollar
 } from "react-icons/fa";
 import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
+import { MdDashboard } from "react-icons/md";
 import { Link } from "react-router-dom";
 
 const AdminSidebar = () => {
@@ -36,66 +37,20 @@ const AdminSidebar = () => {
       </div>
       <nav className={`flex-grow p-4 overflow-y-auto ${isCollapsed ? "flex flex-col items-center" : ""}`}>
         <ul className={`${isCollapsed ? "space-y-8" : "space-y-2"}`}>
+        <li className={`${isCollapsed ? "flex justify-center" : ""} flex items-center gap-2 hover:bg-gray-700 p-3 rounded transition duration-200`}>
+          <MdDashboard className="text-xl" />
+          {!isCollapsed && <Link to='/admin/dashboard'>Dashboard</Link>}
+          </li>
           {/* Products */}
-          <li className={`${isCollapsed ? "flex justify-center" : ""}`}>
-            <div
-              className={`flex items-center ${
-                isCollapsed ? "justify-center" : "justify-between"
-              } hover:bg-gray-700 p-3 rounded cursor-pointer transition duration-200 w-full`}
-              onClick={() => toggleSection("products")}
-            >
-              <div className={`flex items-center ${isCollapsed ? "justify-center" : ""} gap-2`}>
-                <FaBox className="text-xl" />
-                {!isCollapsed && <span>Products</span>}
-              </div>
-              {!isCollapsed &&
-                (openSections.products ? (
-                  <IoIosArrowDown />
-                ) : (
-                  <IoIosArrowForward />
-                ))}
-            </div>
-            {openSections.products && !isCollapsed && (
-              <ul className="mt-2 space-y-1">
-                <li className="hover:text-gray-300 text-gray-400 text-sm">
-                  <a href="/admin/products" className="block p-2 hover:bg-gray-700 rounded">View Products</a>
-                </li>
-                <li className="hover:text-gray-300 text-gray-400 text-sm">
-                  <a href="/admin/add-product" className="block p-2 hover:bg-gray-700 rounded">Add Product</a>
-                </li>
-              </ul>
-            )}
+          <li className={`${isCollapsed ? "flex justify-center" : ""} flex items-center gap-2 hover:bg-gray-700 p-3 rounded transition duration-200`}>
+          <FaBox className="text-xl" />
+          {!isCollapsed && <Link to='/admin/products'>Products</Link>}
           </li>
 
           {/* Users */}
-          <li className={`${isCollapsed ? "flex justify-center" : ""}`}>
-            <div
-              className={`flex items-center ${
-                isCollapsed ? "justify-center" : "justify-between"
-              } hover:bg-gray-700 p-3 rounded cursor-pointer transition duration-200 w-full`}
-              onClick={() => toggleSection("users")}
-            >
-              <div className={`flex items-center ${isCollapsed ? "justify-center" : ""} gap-2`}>
-                <FaUsers className="text-xl" />
-                {!isCollapsed && <span>Users</span>}
-              </div>
-              {!isCollapsed &&
-                (openSections.users ? (
-                  <IoIosArrowDown />
-                ) : (
-                  <IoIosArrowForward />
-                ))}
-            </div>
-            {openSections.users && !isCollapsed && (
-              <ul className="ml-6 mt-2 space-y-1">
-                <li className="hover:text-gray-300 text-gray-400 text-sm">
-                  <a href="/admin/users" className="block p-2 hover:bg-gray-700 rounded">View Users</a>
-                </li>
-                <li className="hover:text-gray-300 text-gray-400 text-sm">
-                  <a href="/admin/add-user" className="block p-2 hover:bg-gray-700 rounded">Add User</a>
-                </li>
-              </ul>
-            )}
+          <li className={`${isCollapsed ? "flex justify-center" : ""} flex items-center gap-2 hover:bg-gray-700 p-3 rounded transition duration-200`}>
+          <FaUsers className="text-xl" />
+          {!isCollapsed && <Link to='/admin/users'>Users</Link>}
           </li>
 
           {/* Categories */}
@@ -116,33 +71,10 @@ const AdminSidebar = () => {
 
           {/* Orders */}
           <li className={`${isCollapsed ? "flex justify-center" : ""}`}>
-            <div
-              className={`flex items-center ${
-                isCollapsed ? "justify-center" : "justify-between"
-              } hover:bg-gray-700 p-3 rounded cursor-pointer transition duration-200 w-full`}
-              onClick={() => toggleSection("orders")}
-            >
-              <div className={`flex items-center ${isCollapsed ? "justify-center" : ""} gap-2`}>
-                <FaClipboardList className="text-xl" />
-                {!isCollapsed && <span>Orders</span>}
-              </div>
-              {!isCollapsed &&
-                (openSections.orders ? (
-                  <IoIosArrowDown />
-                ) : (
-                  <IoIosArrowForward />
-                ))}
-            </div>
-            {openSections.orders && !isCollapsed && (
-              <ul className="ml-6 mt-2 space-y-1">
-                <li className="hover:text-gray-300 text-gray-400 text-sm">
-                  <a href="/admin/orders" className="block p-2 hover:bg-gray-700 rounded">View Orders</a>
-                </li>
-                <li className="hover:text-gray-300 text-gray-400 text-sm">
-                  <a href="/admin/manage-orders" className="block p-2 hover:bg-gray-700 rounded">Manage Orders</a>
-                </li>
-              </ul>
-            )}
+          <li className={`${isCollapsed ? "flex justify-center" : ""} flex items-center gap-2 hover:bg-gray-700 p-3 rounded transition duration-200`}>
+            <FaClipboardList className="text-xl" />
+            {!isCollapsed && <a href="/admin/ordermanagement" className="block">Orders</a>}
+          </li>
           </li>
         </ul>
       </nav>

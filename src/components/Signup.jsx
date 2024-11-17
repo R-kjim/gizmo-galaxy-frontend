@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
+import { Link } from 'react-router-dom';
+import config from '../../config';
 
 
 
 const Signup = () => {
+  const {api}=config
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
@@ -14,7 +17,6 @@ const Signup = () => {
     lastName: '',
     email: '',
     password: '',
-    role: ''  // Add role to initial values
   };
 
   const validate = (values) => {
@@ -38,27 +40,23 @@ const Signup = () => {
       errors.password = 'Password is required';
     }
 
-    if (!values.role) {
-      errors.role = 'Role is required'; // Validate role
-    }
+    
 
     return errors;
   };
 
   const handleSubmit = async (values, { setSubmitting }) => {
-    console.log("Form Data on Submit:", values); // Log data before submission
 
     setLoading(true);
     setError('');
     setSuccessMessage('');
 
     try {
-      const response = await axios.post('http://127.0.0.1:5000/signup', {
+      const response = await axios.post(`${api}/signup`, {
         first_name: values.firstName,
         last_name: values.lastName,
         email: values.email,
         password: values.password,
-        role: values.role // Include role in the request payload
       });
       console.log("Response from API:", response); // Log API response
 
@@ -136,16 +134,6 @@ const Signup = () => {
               <ErrorMessage name="password" component="div" className="text-red-600 text-sm" />
             </div>
 
-            <div className="mb-4">
-              <label htmlFor="role" className="block text-gray-700">Role</label>
-              <Field as="select" id="role" name="role" className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <option value="">Select a Role</option>
-                <option value="admin">Admin</option>
-                <option value="Client">User</option>
-              </Field>
-              <ErrorMessage name="role" component="div" className="text-red-600 text-sm" />
-            </div>
-
             <button
               type="submit"
               disabled={isSubmitting || loading}
@@ -153,6 +141,7 @@ const Signup = () => {
             >
               {loading || isSubmitting ? 'Signing Up...' : 'Sign Up'}
             </button>
+            <p className='ml-20'>Already registered? <Link to='/login' className='ml-2'>Login</Link></p>
           </Form>
         )}
       </Formik>

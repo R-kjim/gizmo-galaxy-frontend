@@ -149,6 +149,22 @@ const TaxCategoriesDisplay = () => {
                 onClick={() => { setIsEditOpen(true); setNewTaxCategory({ name: category.name, value: category.value, id: category.id }); }}
                 className="flex items-center px-2 py-1 bg-blue-500 text-white text-sm rounded hover:bg-blue-600 transition"
               >
+                <span className="mr-1">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={2}
+              stroke="currentColor"
+              className="w-4 h-4"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M16.862 3.487l3.651 3.651m-8.042 8.042L5.91 20.738a2.121 2.121 0 01-2.121 0l-2.121-2.121a2.121 2.121 0 010-2.121l8.042-8.042m10.733-3.01a2.121 2.121 0 00-3.01 0l-1.52 1.52 3.651 3.65 1.52-1.519a2.121 2.121 0 000-3.01z"
+              />
+            </svg>
+          </span>
                 Edit
               </button>
 
@@ -157,6 +173,22 @@ const TaxCategoriesDisplay = () => {
                 onClick={() => handleDelete(category.id, category.name)}
                 className="flex items-center px-2 py-1 bg-red-500 text-white text-sm rounded hover:bg-red-600 transition"
               >
+                <span className="mr-1">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={2}
+                    stroke="currentColor"
+                    className="w-4 h-4"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </span>
                 Delete
               </button>
             </div>
