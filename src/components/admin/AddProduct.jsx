@@ -1,12 +1,15 @@
 import { useContext, useState } from 'react';
 import { AppContext } from '../../AppContextProvider';
+import { FaTimes } from 'react-icons/fa';
+import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
 
 const AddProduct = () => {
-  const value=useContext(AppContext)
+  const {taxCategories,categories,setProducts,products}=useContext(AppContext)
   const [productName, setProductName] = useState("");
   const [category, setCategory] = useState("");
   const [description, setDescription] = useState("");
-  const [image, setImage] = useState(null);
+  const [images, setImages] = useState([]);
   const [features, setFeatures] = useState([]);
   const [newFeature, setNewFeature] = useState("");
   const [taxCategory, setTaxCategory] = useState(null);
@@ -16,6 +19,8 @@ const AddProduct = () => {
   const [sellingPriceInclTax, setSellingPriceInclTax] = useState("");
   const [openingStock, setOpeningStock] = useState(0);
   const [taxMultiplier,setTaxMultiplier]=useState(null)
+
+  const navigate=useNavigate()
   // Handler for adding a new feature
   const addFeature = () => {
     if (newFeature.trim()) {
@@ -27,6 +32,10 @@ const AddProduct = () => {
   //submit product function
   function addProductFn(e){
     e.preventDefault()
+    let formData=new FormData() //create a new formdata and append images to the formdata
+    for(let i=0;i<images.length;i++){
+      formData.append('file',images[i].file)
+    }
     const productData={
         "name":productName,
         "category_id":category,
@@ -35,11 +44,83 @@ const AddProduct = () => {
         "purchase_price":purchasePriceInclTax,
         "selling_price":sellingPriceInclTax,
         "quantity":openingStock,
-        "tax_id":taxCategory
+        "tax_id":taxCategory,
     }
-    console.log(productData)
-  }
+    formData.append("product_data",JSON.stringify(productData)) //appends the product data as json format so we have a single fetch
+    Swal.fire({
+  title: `Add ${productName}?`,
+  icon: 'warning',
+  showCancelButton: true,
+  confirmButtonColor: '#3085d6',
+  cancelButtonColor: '#d33',
+  confirmButtonText: 'Proceed',
+  cancelButtonText: 'Cancel',
+  allowOutsideClick: false, // Prevent closing while loading
+  allowEscapeKey: false,   // Prevent closing with Escape key
+}).then((result) => {
+  if (result.isConfirmed) {
+    // Show loading spinner
+    Swal.fire({
+      title: 'Processing...',
+      text: 'Please wait while we add the product.',
+      icon: 'info',
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+      showConfirmButton: false,
+      didOpen: () => {
+        Swal.showLoading();
+        
+        // Perform the fetch
+        fetch("http://127.0.0.1:5000/products", {
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${localStorage.getItem("access_Token")}`,
+          },
+          body: formData,
+        })
+          .then((res) => {
+            if (res.ok) {
+              return res.json().then((data) => {
+                setProducts([...products, data]);
+                Swal.fire({
+                  title: "Success!",
+                  text: "Product added successfully.",
+                  icon: "success",
+                  confirmButtonText: "OK",
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                    navigate('/admin/products');
+                  }
+                });
+              });
+            }else{
+              return res.json().then(data=>{
+                Swal.fire({
+                  title:"Failed!",
+                  text:`${data.msg} Try again later.`,
+                  icon:'warning',
+                  confirmButtonText: "OK"
+              })
+              })
+            }
+          })
+        }})
+  }})}
+  //function to handle adding adding an image 
+   // Handle file selection and preview
+   const handleImages = (e) => {
+    const files = Array.from(e.target.files); // Convert FileList to an array
+    const newImages = files.map((file) => {
+      const url = URL.createObjectURL(file); // Create a preview URL
+      return { file, url };
+    });
+    setImages((prevImages) => [...prevImages, ...newImages]);
+  };
 
+  // Remove an image from the preview list
+  const removeImage = (url) => {
+    setImages(images.filter((image) => image.url !== url));
+  };
   //function to handle changes in price and tax category together with its assist functions
   function handlePriceTax(value1,constant){
     function purchasePriceExclTaxFn(){
@@ -102,7 +183,7 @@ const AddProduct = () => {
       setTaxCategory(value1)
       if(value1===""){setTaxMultiplier(null);taxCategoryFn("null")}
       else{
-      const taxArr=value.taxes.filter((item)=>{if( item.id===parseInt(value1)){return item}})[0]
+      const taxArr=taxCategories.filter((item)=>{if( item.id===parseInt(value1)){return item}})[0]
       setTaxMultiplier(taxArr.value);taxCategoryFn(taxArr.value)}
     }
     if(constant==="sellingPriceExclTax" ){
@@ -142,7 +223,7 @@ const AddProduct = () => {
       required
     >
       <option value="">Choose a category</option>
-      {value.categories.map((category)=>{
+      {categories.map((category)=>{
         return (<option key={category.id} value={category.id}>{category.name}</option>)
       })}
       
@@ -168,9 +249,31 @@ const AddProduct = () => {
           <label className="block font-semibold mb-2">Product Image</label>
           <input
             type="file"
-            onChange={(e) => setImage(e.target.files[0])}
+            multiple // Allow multiple file selection
+            onChange={handleImages} // Handle onChange event
             className="w-full p-2 border rounded-md"
           />
+          <div className="mt-4">
+            {images.length > 0 && (
+              <div className="flex flex-wrap gap-2">
+                {images.map((image, index) => (
+                  <div key={index} className="relative w-32 h-32">
+                    <img
+                      src={image.url}
+                      alt="preview"
+                      className="w-full h-full object-cover rounded-md"
+                    />
+                    <button
+                      onClick={() => removeImage(image.url)}
+                      className="absolute top-0 right-0 p-1 bg-gray-500 text-white rounded-full"
+                    >
+                      <FaTimes />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
@@ -187,6 +290,7 @@ const AddProduct = () => {
             placeholder="Add a feature"
           />
           <button
+          type='button'
             onClick={addFeature}
             className="bg-blue-500 text-white px-4 py-2 rounded-md"
           >
@@ -215,7 +319,7 @@ const AddProduct = () => {
               className="w-full p-2 border rounded-md"
             >
               <option value="">Select tax category</option>
-              {value.taxes.map((tax)=>{
+              {taxCategories.map((tax)=>{
                 return (
                   <option key={tax.id} value={tax.id}>{tax.name}</option>
                 )

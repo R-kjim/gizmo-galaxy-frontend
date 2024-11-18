@@ -53,7 +53,6 @@ const Checkout = () => {
     return {address:`${shippingDetails.County}, ${shippingDetails['Street/Building Name']}, ${shippingDetails['city/town']}`,
             products:products}
   }
-
   // Check if all shipping fields are filled
   const isShippingComplete = Object.values(shippingDetails).every((field) => field.trim() !== '');
   const handlePlaceOrder = () => {
@@ -64,6 +63,7 @@ const Checkout = () => {
         "taxes":parseFloat(taxAmount.toFixed(2)),
         "products":shipping_address().products
       }
+      
       fetch("http://127.0.0.1:5000/orders",{
         method:"POST",
         headers:{
@@ -75,11 +75,13 @@ const Checkout = () => {
       .then(res=>{
         if(res.ok){
           return res.json().then(data=>{
-            value.userData.orders.push(data)
+            const my_data=value.userData
+            my_data.orders.push(data)
+            value.setUserData(my_data)
             localStorage.setItem('cart',JSON.stringify([]));
             value.setCartTotals(0)
             toast.success("order placed successfully")
-
+            navigate('/client/my-orders')
           })
         }else{return res.json().then(data=>toast.error(data.msg))}
       })
