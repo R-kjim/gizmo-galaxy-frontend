@@ -1,13 +1,16 @@
 import React from 'react'
 import { Outlet } from 'react-router-dom'
-import Sidebar from './AdminSidebar'
+import AdminSidebar from './Sidebar'
 
 const Admin = () => {
   return (
-    <div>
-      <Sidebar />
+    <>
+    <AdminSidebar />
+    <div className='ml-64'>
+      
       <Outlet />
     </div>
+    </>
   )
 }
 
