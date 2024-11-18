@@ -1,152 +1,85 @@
-// import React from 'react';
-// import { 
-//   FaHome, 
-//   FaBox, 
-//   FaUser, 
-//   FaShoppingCart, 
-//   FaChartBar, 
-//   FaMoneyBillWave, 
-//   FaCog 
-// } from 'react-icons/fa';
-
-// const Sidebar = () => {
-//   return (
-//     <div className="h-screen w-64 bg-gray-800 text-white">
-//       <div className="p-4 text-center font-bold text-lg border-b border-gray-700">
-//         Admin Panel
-//       </div>
-
-//       <ul className="mt-4 space-y-2">
-//         {/* Example Links */}
-//         <li className="hover:bg-gray-700 px-4 py-2 flex items-center">
-//           <FaHome className="mr-2" />
-//           <a href="#home">Home</a>
-//         </li>
-//         <li className="hover:bg-gray-700 px-4 py-2 flex items-center">
-//           <FaBox className="mr-2" />
-//           <a href="#products">Products</a>
-//         </li>
-//         <li className="hover:bg-gray-700 px-4 py-2 flex items-center">
-//           <FaUser className="mr-2" />
-//           <a href="#customers">Customers</a>
-//         </li>
-//         <li className="hover:bg-gray-700 px-4 py-2 flex items-center">
-//           <FaShoppingCart className="mr-2" />
-//           <a href="#orders">Orders</a>
-//         </li>
-//         <li className="hover:bg-gray-700 px-4 py-2 flex items-center">
-//           <FaChartBar className="mr-2" />
-//           <a href="#sales">Sales</a>
-//         </li>
-//         <li className="hover:bg-gray-700 px-4 py-2 flex items-center">
-//           <FaMoneyBillWave className="mr-2" />
-//           <a href="#contacts">Contacts</a>
-//         </li>
-//         <li className="hover:bg-gray-700 px-4 py-2 flex items-center">
-//           <FaCog className="mr-2" />
-//           <a href="#settings">Settings</a>
-//         </li>
-//       </ul>
-//     </div>
-//   );
-// };
-
-// export default Sidebar;
-
-import React from 'react';
+import React, { useState } from "react";
 import { 
-  FaHome, 
-  FaBox, 
-  FaUser, 
-  FaShoppingCart, 
-  FaChartBar, 
-  FaMoneyBillWave, 
-  FaCog 
-} from 'react-icons/fa';
-import { NavLink } from 'react-router-dom';
+  FaBox, FaUser, FaUsers, FaChartBar, FaClipboardList, FaTags, 
+  FaFileInvoiceDollar
+} from "react-icons/fa";
+import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
+import { MdDashboard } from "react-icons/md";
+import { Link } from "react-router-dom";
 
-const Sidebar = () => {
+const AdminSidebar = () => {
+  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [openSections, setOpenSections] = useState({});
+
+  const toggleSection = (section) => {
+    setOpenSections((prev) => ({
+      ...prev,
+      [section]: !prev[section],
+    }));
+  };
+
   return (
-    <div className="h-screen w-64 bg-gray-800 text-white">
-      <div className="p-4 text-center font-bold text-lg border-b border-gray-700">
-        Admin Panel
+    <aside
+      className={`h-screen ${
+        isCollapsed ? "w-16 items-center" : "w-64"
+      } bg-gray-800 text-white fixed transition-all duration-300 shadow-md flex flex-col`}
+    >
+      <div className="p-4 border-b border-gray-700 flex justify-between items-center">
+        <h2 className={`text-xl font-semibold ${isCollapsed ? "hidden" : ""}`}>
+          Admin Dashboard
+        </h2>
+        <button
+          onClick={() => setIsCollapsed(!isCollapsed)}
+          className="text-gray-400 hover:text-white focus:outline-none"
+        >
+          {isCollapsed ? "☰" : "✕"}
+        </button>
       </div>
+      <nav className={`flex-grow p-4 overflow-y-auto ${isCollapsed ? "flex flex-col items-center" : ""}`}>
+        <ul className={`${isCollapsed ? "space-y-8" : "space-y-2"}`}>
+        <li className={`${isCollapsed ? "flex justify-center" : ""} flex items-center gap-2 hover:bg-gray-700 p-3 rounded transition duration-200`}>
+          <MdDashboard className="text-xl" />
+          {!isCollapsed && <Link to='/admin/dashboard'>Dashboard</Link>}
+          </li>
+          {/* Products */}
+          <li className={`${isCollapsed ? "flex justify-center" : ""} flex items-center gap-2 hover:bg-gray-700 p-3 rounded transition duration-200`}>
+          <FaBox className="text-xl" />
+          {!isCollapsed && <Link to='/admin/products'>Products</Link>}
+          </li>
 
-      <ul className="mt-4 space-y-2">
-        {/* Example NavLinks */}
-        <li className="hover:bg-gray-700 px-4 py-2 flex items-center">
-          <FaHome className="mr-2" />
-          <NavLink
-            to="/home"
-            activeClassName="bg-gray-700"
-            className="w-full block px-4 py-2"
-          >
-            Home
-          </NavLink>
-        </li>
-        <li className="hover:bg-gray-700 px-4 py-2 flex items-center">
-          <FaBox className="mr-2" />
-          <NavLink
-            to="/products"
-            activeClassName="bg-gray-700"
-            className="w-full block px-4 py-2"
-          >
-            Products
-          </NavLink>
-        </li>
-        <li className="hover:bg-gray-700 px-4 py-2 flex items-center">
-          <FaUser className="mr-2" />
-          <NavLink
-            to="/customers"
-            activeClassName="bg-gray-700"
-            className="w-full block px-4 py-2"
-          >
-            Customers
-          </NavLink>
-        </li>
-        <li className="hover:bg-gray-700 px-4 py-2 flex items-center">
-          <FaShoppingCart className="mr-2" />
-          <NavLink
-            to="/orders"
-            activeClassName="bg-gray-700"
-            className="w-full block px-4 py-2"
-          >
-            Orders
-          </NavLink>
-        </li>
-        <li className="hover:bg-gray-700 px-4 py-2 flex items-center">
-          <FaChartBar className="mr-2" />
-          <NavLink
-            to="/sales"
-            activeClassName="bg-gray-700"
-            className="w-full block px-4 py-2"
-          >
-            Sales
-          </NavLink>
-        </li>
-        <li className="hover:bg-gray-700 px-4 py-2 flex items-center">
-          <FaMoneyBillWave className="mr-2" />
-          <NavLink
-            to="/contacts"
-            activeClassName="bg-gray-700"
-            className="w-full block px-4 py-2"
-          >
-            Contacts
-          </NavLink>
-        </li>
-        <li className="hover:bg-gray-700 px-4 py-2 flex items-center">
-          <FaCog className="mr-2" />
-          <NavLink
-            to="/settings"
-            activeClassName="bg-gray-700"
-            className="w-full block px-4 py-2"
-          >
-            Settings
-          </NavLink>
-        </li>
-      </ul>
-    </div>
+          {/* Users */}
+          <li className={`${isCollapsed ? "flex justify-center" : ""} flex items-center gap-2 hover:bg-gray-700 p-3 rounded transition duration-200`}>
+          <FaUsers className="text-xl" />
+          {!isCollapsed && <Link to='/admin/users'>Users</Link>}
+          </li>
+
+          {/* Categories */}
+          <li className={`${isCollapsed ? "flex justify-center" : ""} flex items-center gap-2 hover:bg-gray-700 p-3 rounded transition duration-200`}>
+          <FaTags className="text-xl" />
+          {!isCollapsed && <Link to='/admin/product-categories'>Categories</Link>}
+          </li>
+
+          <li className={`${isCollapsed ? "flex justify-center" : ""} flex items-center gap-2 hover:bg-gray-700 p-3 rounded transition duration-200`}>
+            <FaFileInvoiceDollar className="text-xl" />
+            {!isCollapsed && <Link to="/admin/tax-categories" className="block">Taxes</Link>}
+          </li>
+          {/* Analytics */}
+          <li className={`${isCollapsed ? "flex justify-center" : ""} flex items-center gap-2 hover:bg-gray-700 p-3 rounded transition duration-200`}>
+            <FaChartBar className="text-xl" />
+            {!isCollapsed && <a href="/admin/analytics" className="block">View Analytics</a>}
+          </li>
+
+          {/* Orders */}
+          <li className={`${isCollapsed ? "flex justify-center" : ""}`}>
+          <li className={`${isCollapsed ? "flex justify-center" : ""} flex items-center gap-2 hover:bg-gray-700 p-3 rounded transition duration-200`}>
+            <FaClipboardList className="text-xl" />
+            {!isCollapsed && <a href="/admin/ordermanagement" className="block">Orders</a>}
+          </li>
+          </li>
+        </ul>
+      </nav>
+    </aside>
   );
 };
 
-export default Sidebar;
+export default AdminSidebar;
