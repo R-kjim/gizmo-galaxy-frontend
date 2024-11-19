@@ -20,9 +20,9 @@ const AdminSidebar = () => {
 
   return (
     <aside
-      className={`h-screen ${
+      className={`min-h-screen ${
         isCollapsed ? "w-16 items-center" : "w-64"
-      } bg-gray-800 text-white fixed transition-all duration-300 shadow-md flex flex-col`}
+      } bg-gray-900 text-white fixed transition-all duration-300 shadow-md flex flex-col`}
     >
       <div className="p-4 border-b border-gray-700 flex justify-between items-center">
         <h2 className={`text-xl font-semibold ${isCollapsed ? "hidden" : ""}`}>
