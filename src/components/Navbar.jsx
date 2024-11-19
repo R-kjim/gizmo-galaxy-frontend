@@ -13,7 +13,7 @@ const Navbar = () => {
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
-  
+
   return (
     <nav className="bg-gray-800 text-white fixed top-0 left-0 right-0 z-50" onMouseLeave={() => setIsHovered(false)}>
       <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
@@ -29,7 +29,8 @@ const Navbar = () => {
             <Link to="/client/product-listings" className="hover:text-gray-400">Products</Link>
             <Link to="/" className="hover:text-gray-400">Hot & New</Link>
             <Link to="/" className="hover:text-gray-400">Support</Link>
-          </div>}
+          </div>
+          }
 
           {!value.userData.email &&
             <div className="hidden md:flex flex-grow justify-center items-center space-x-20 md:space-x-6">
@@ -54,7 +55,7 @@ const Navbar = () => {
             <Link to="/cart" className="relative hover:text-gray-400">
               <FaShoppingCart className="text-xl" />
               <span className="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2 bg-red-500 text-white text-xs font-semibold w-4 h-4 flex items-center justify-center rounded-full">
-                {value.cartTotals} 
+                {value.cartTotals}
               </span>
             </Link>
             <button to="/" className="hover:text-gray-400" onMouseEnter={()=>setIsHovered(true)} onClick={()=>setIsHovered(false)}>
@@ -63,53 +64,53 @@ const Navbar = () => {
             {isHovered && (
               <div className="absolute top-16 right-2 w-60 bg-gray-800 border border-gray-600 shadow-md rounded-xl p-4">
                 {/* navbar status when logged out */}
-              {(!value.userData.email)&&<><Link 
-                to='/login' 
-                className="block text-white font-medium cursor-pointer hover:text-blue-400 hover:bg-gray-700 py-2 px-3 rounded-lg transition-colors duration-200" 
+              {(!value.userData.email)&&<><Link
+                to='/login'
+                className="block text-white font-medium cursor-pointer hover:text-blue-400 hover:bg-gray-700 py-2 px-3 rounded-lg transition-colors duration-200"
                 onClick={() => setIsHovered(false)}
               >
                 Login
               </Link>
-              <Link 
-                to='/signup' 
-                className="block text-white font-medium cursor-pointer hover:text-blue-400 hover:bg-gray-700 py-2 px-3 rounded-lg transition-colors duration-200 mt-2" 
+              <Link
+                to='/signup'
+                className="block text-white font-medium cursor-pointer hover:text-blue-400 hover:bg-gray-700 py-2 px-3 rounded-lg transition-colors duration-200 mt-2"
                 onClick={() => setIsHovered(false)}
               >
                 Signup
               </Link></>}
               {/* navbar status when logged in */}
               {localStorage.getItem('userId')&&value.userData.role==="Client"&&(<>
-              <Link 
-                to='/client/my-orders' 
-                className="block text-white font-medium cursor-pointer hover:text-blue-400 hover:bg-gray-700 py-2 px-3 rounded-lg transition-colors duration-200" 
+              <Link
+                to='/client/my-orders'
+                className="block text-white font-medium cursor-pointer hover:text-blue-400 hover:bg-gray-700 py-2 px-3 rounded-lg transition-colors duration-200"
                 onClick={() => setIsHovered(false)}
               >
                 My Orders
               </Link>
-              <Link 
-                to='/login' 
-                className="block text-white font-medium cursor-pointer hover:text-blue-400 hover:bg-gray-700 py-2 px-3 rounded-lg transition-colors duration-200" 
+              <Link
+                to='/login'
+                className="block text-white font-medium cursor-pointer hover:text-blue-400 hover:bg-gray-700 py-2 px-3 rounded-lg transition-colors duration-200"
                 onClick={() => setIsHovered(false)}
               >
                 Personal Information
               </Link>
-              <Link 
-                to='/login' 
-                className="block text-white font-medium cursor-pointer hover:text-blue-400 hover:bg-gray-700 py-2 px-3 rounded-lg transition-colors duration-200" 
+              <Link
+                to='/login'
+                className="block text-white font-medium cursor-pointer hover:text-blue-400 hover:bg-gray-700 py-2 px-3 rounded-lg transition-colors duration-200"
                 onClick={() => setIsHovered(false)}
               >
                 My Shipping Adress
               </Link>
-              <Link 
-                to='/login' 
-                className="block text-white font-medium cursor-pointer hover:text-blue-400 hover:bg-gray-700 py-2 px-3 rounded-lg transition-colors duration-200" 
+              <Link
+                to='/login'
+                className="block text-white font-medium cursor-pointer hover:text-blue-400 hover:bg-gray-700 py-2 px-3 rounded-lg transition-colors duration-200"
                 onClick={() => setIsHovered(false)}
               >
                 Product Reviews
               </Link>
-              <Link 
-                to='/' 
-                className="block text-white font-medium cursor-pointer hover:text-blue-400 hover:bg-gray-700 py-2 px-3 rounded-lg transition-colors duration-200 mt-2" 
+              <Link
+                to='/'
+                className="block text-white font-medium cursor-pointer hover:text-blue-400 hover:bg-gray-700 py-2 px-3 rounded-lg transition-colors duration-200 mt-2"
                 onClick={() => {setIsHovered(false);localStorage.removeItem("cart");localStorage.setItem('cart',JSON.stringify([]));value.setCartTotals(0);localStorage.removeItem('userId');
                   localStorage.removeItem("access_Token");localStorage.removeItem("refresh_Token");value.setUserData([]);value.setLoginCheckout(false);value.setCartTotals(0)
                 }}
@@ -150,3 +151,4 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
