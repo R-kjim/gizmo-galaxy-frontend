@@ -17,8 +17,10 @@ const OrderManagement = () => {
             const isStatusMatch = order.status === criteria.status || order.status.includes(criteria.status);
             const isCustomerMatch = 
             !criteria.customer || 
-            (order.customer && order.customer.toLowerCase().includes(criteria.customer.toLowerCase()));
-        
+            (order.user && 
+                `${order.user.first_name} ${order.user.last_name}`.toLowerCase().includes(criteria.customer.toLowerCase())
+            );
+    
             let isDateMatch = true;
             if (criteria.dateRange.start && criteria.dateRange.end) {
                 const startDate = new Date(criteria.dateRange.start);
@@ -26,12 +28,12 @@ const OrderManagement = () => {
                 const orderDate = new Date(order.date);
                 isDateMatch = orderDate >= startDate && orderDate <= endDate;
             }
-
+    
             return isStatusMatch && isCustomerMatch && isDateMatch;
         });
         setFilteredOrders(filtered);
     };
-
+    
     const handleToggleOrder = (orderId) => {
         setSelectedOrderId(prev => (prev === orderId ? null : orderId));
     };
