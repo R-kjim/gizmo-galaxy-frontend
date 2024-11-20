@@ -24,7 +24,11 @@ import MyOrders from './components/client/MyOrders'
 import CategoriesDisplay from './components/admin/CategoriesDisplay'
 import TaxCategoriesDisplay from './components/admin/Taxes'
 import Users from './components/admin/Users'
+
 import ReviewForm from './components/Product Review/Review form'
+
+import ForgotPassword from './components/ForgotPassword'
+
 
 
 
@@ -32,12 +36,12 @@ const App = () => {
   return (
     <div>
     <ToastContainer />
-    <Navbar/>
+    
     {/* <Routes>
     <Route path='/' element={<Homepage />}/>
 
     </Routes> */}
-    <div className='mt-16 min-h-screen'>
+    <div className='min-h-screen'>
     <Routes>
       <Route path='/' element={<Homepage />}/>
       <Route path='/admin' element={<Admin />}>
@@ -60,6 +64,7 @@ const App = () => {
       <Route path='/login' element={<Login />}/>
       <Route path='/signup' element={<Signup />}/>
       <Route path='/cart' element={<Cart />}/>
+      <Route path='/forgot-password' element={<ForgotPassword />}/>
     </Routes>
     </div>
 

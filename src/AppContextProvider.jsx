@@ -16,6 +16,7 @@ const AppContextProvider = (props) => {
     const [allOrders,setAllOrders]=useState([])
     const [loginCheckout,setLoginCheckout]=useState(false) //state to manage loging in and proceed to checkout
     const [allUsers,setUsers]=useState([])
+    const [filteredOrders, setFilteredOrders] = useState([]);
     
     //useefect to fetch user data once they are successfully logged in
     useEffect(()=>{
@@ -60,6 +61,7 @@ const AppContextProvider = (props) => {
         .then(res=>res.json())
         .then(data=>{
             setAllOrders(data)
+            setFilteredOrders(data)
         })
 
         //fetch users
@@ -98,7 +100,7 @@ const AppContextProvider = (props) => {
     const value={
         cartTotals,setCartTotals,userData,setUserData,cartManageFn,cartItems,setCartItems,
         categories,setCategories,taxCategories,setTaxCategories,products,setProducts,setUserId,allOrders,setAllOrders,
-        loginCheckout,setLoginCheckout,allUsers,setUsers
+        loginCheckout,setLoginCheckout,allUsers,setUsers,filteredOrders, setFilteredOrders
     }
   return (
     <AppContext.Provider value={value}>
