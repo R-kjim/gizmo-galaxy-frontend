@@ -15,7 +15,7 @@ const Navbar = () => {
   };
   
   return (
-    <nav className="bg-gray-800 text-white fixed top-0 left-0 right-0 z-50" onMouseLeave={() => setIsHovered(false)}>
+    <nav className="bg-gray-900 text-white fixed top-0 left-0 right-0 z-50" onMouseLeave={() => setIsHovered(false)}>
       <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center h-16 justify-between">
 
@@ -40,7 +40,7 @@ const Navbar = () => {
           </div>
           }
 
-
+ 
           {localStorage.getItem('userId')&&value.userData.role==="Admin" && <div className="hidden sm:flex flex-grow justify-center items-center space-x-20">
             <Link to="/" className="hover:text-gray-400">Dashboard</Link>
             <Link to="/admin/products" className="hover:text-gray-400">Products</Link>

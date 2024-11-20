@@ -107,12 +107,12 @@ const ProductCard = () => {
             >
               Out of Stock
             </button>}
-            {/* <button 
-              onClick={handleBuyNow} 
+            <button 
+            onclick={()=>navigate(`/client/product-review/${product.id}`)}
               className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md shadow-md"
             >
-              Buy Now
-            </button> */}
+              Review product
+            </button>
           </div>
         </div> 
       </div> 
@@ -120,4 +120,4 @@ const ProductCard = () => {
   );
 };
 
-export default ProductCard;
+export default ProductCard
