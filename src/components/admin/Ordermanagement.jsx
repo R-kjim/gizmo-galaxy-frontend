@@ -4,14 +4,12 @@ import Swal from 'sweetalert2';
 import { toast } from 'react-toastify';
 
 const OrderManagement = () => {
-    const { allOrders,setAllOrders } = useContext(AppContext);
-    const [filteredOrders, setFilteredOrders] = useState([]);
+    const { allOrders,setAllOrders,filteredOrders, setFilteredOrders } = useContext(AppContext);
     const [selectedOrderId, setSelectedOrderId] = useState(null);
 
-    useEffect(() => {
-        setFilteredOrders(allOrders);
-    }, [allOrders]);
-    console.log(filteredOrders)
+    // useEffect(() => {
+    //     setFilteredOrders(allOrders);
+    // }, [allOrders]);
     const handleFilter = (criteria) => {
         const filtered = allOrders.filter(order => {
             const isStatusMatch = order.status === criteria.status || order.status.includes(criteria.status);
@@ -61,6 +59,7 @@ const OrderManagement = () => {
                             return res.json().then(data=>{
                                 let newOrders=allOrders.map((order)=>order.id===orderId?{...order,...data}:order)
                                 setAllOrders(newOrders)
+                                setFilteredOrders(newOrders)
                                 toast.success("Order updated successfully")
                             })
                         }else{return res.json().then(data=>toast.error(data.msg))}
@@ -94,6 +93,7 @@ const OrderManagement = () => {
                             return res.json().then(data=>{
                                 let newOrders=allOrders.map((order)=>order.id===orderId?{...order,...data}:order)
                                 setAllOrders(newOrders)
+                                setFilteredOrders(newOrders)
                                 toast.success("Order updated successfully")
                             })
                         }else{return res.json().then(data=>toast.error(data.msg))}
@@ -127,6 +127,7 @@ const OrderManagement = () => {
                             return res.json().then(data=>{
                                 let newOrders=allOrders.map((order)=>order.id===orderId?{...order,...data}:order)
                                 setAllOrders(newOrders)
+                                setFilteredOrders(newOrders)
                                 toast.success("Order delivered successfully")
                             })
                         }else{return res.json().then(data=>toast.error(data.msg))}

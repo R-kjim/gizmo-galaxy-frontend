@@ -1,3 +1,3 @@
-const config = {api:"http://127.0.0.1:5000"}
+const config = {api:import.meta.env.VITE_BACKEND_URL}
 
 export default config
