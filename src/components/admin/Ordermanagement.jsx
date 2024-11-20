@@ -15,8 +15,10 @@ const OrderManagement = () => {
     const handleFilter = (criteria) => {
         const filtered = allOrders.filter(order => {
             const isStatusMatch = order.status === criteria.status || order.status.includes(criteria.status);
-            const isCustomerMatch = !criteria.customer || order.customer.toLowerCase().includes(criteria.customer.toLowerCase());
-
+            const isCustomerMatch = 
+            !criteria.customer || 
+            (order.customer && order.customer.toLowerCase().includes(criteria.customer.toLowerCase()));
+        
             let isDateMatch = true;
             if (criteria.dateRange.start && criteria.dateRange.end) {
                 const startDate = new Date(criteria.dateRange.start);
