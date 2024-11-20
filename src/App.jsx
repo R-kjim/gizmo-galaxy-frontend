@@ -32,12 +32,12 @@ const App = () => {
   return (
     <div>
     <ToastContainer />
-    <Navbar/>
+    
     {/* <Routes>
     <Route path='/' element={<Homepage />}/>
 
     </Routes> */}
-    <div className='mt-16 min-h-screen'>
+    <div className='min-h-screen'>
     <Routes>
       <Route path='/' element={<Homepage />}/>
       <Route path='/admin' element={<Admin />}>
