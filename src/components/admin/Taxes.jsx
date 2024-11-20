@@ -2,9 +2,11 @@ import React, { useContext, useState } from 'react';
 import { AppContext } from '../../AppContextProvider';
 import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
+import config from '../../../config';
 
 const TaxCategoriesDisplay = () => {
   const {taxCategories,setTaxCategories}=useContext(AppContext)
+  const {api}=config
   const value = useContext(AppContext);
 
   
@@ -23,7 +25,7 @@ const TaxCategoriesDisplay = () => {
 
   const handleAddTaxCategory = () => {
     if (newTaxCategory.name.trim() && newTaxCategory.value.trim()) {
-      fetch("http://127.0.0.1:5000/tax-category", {
+      fetch("${api}/tax-category", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -50,7 +52,7 @@ const TaxCategoriesDisplay = () => {
 
   function handleEditTaxCategory() {
     if (newTaxCategory.name.trim() && newTaxCategory.value.trim()) {
-      fetch(`http://127.0.0.1:5000/tax-category/${newTaxCategory.id}`, {
+      fetch(`${api}/tax-category/${newTaxCategory.id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -87,7 +89,7 @@ const TaxCategoriesDisplay = () => {
       cancelButtonText: 'Cancel'
     }).then((result) => {
       if (result.isConfirmed) {
-        fetch(`http://127.0.0.1:5000/tax-category/${id}`, {
+        fetch(`${api}/tax-category/${id}`, {
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",

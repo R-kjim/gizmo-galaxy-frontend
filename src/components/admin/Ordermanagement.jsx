@@ -2,10 +2,12 @@ import React, { useContext, useEffect, useState } from 'react';
 import { AppContext } from '../../AppContextProvider';
 import Swal from 'sweetalert2';
 import { toast } from 'react-toastify';
+import config from '../../../config';
 
 const OrderManagement = () => {
     const { allOrders,setAllOrders,filteredOrders, setFilteredOrders } = useContext(AppContext);
     const [selectedOrderId, setSelectedOrderId] = useState(null);
+    const {api}=config
 
     // useEffect(() => {
     //     setFilteredOrders(allOrders);
@@ -46,7 +48,7 @@ const OrderManagement = () => {
             })
             .then((result) => {
                 if (result.isConfirmed) {
-                    fetch(`http://127.0.0.1:5000/order/${orderId}`,{
+                    fetch(`${api}/order/${orderId}`,{
                         method:"PATCH",
                         headers:{
                             "Content-Type":"application/json",
@@ -80,7 +82,7 @@ const OrderManagement = () => {
             })
             .then((result) => {
                 if (result.isConfirmed) {
-                    fetch(`http://127.0.0.1:5000/order/${orderId}`,{
+                    fetch(`${api}/order/${orderId}`,{
                         method:"PATCH",
                         headers:{
                             "Content-Type":"application/json",
@@ -114,7 +116,7 @@ const OrderManagement = () => {
             })
             .then((result) => {
                 if (result.isConfirmed) {
-                    fetch(`http://127.0.0.1:5000/order/${orderId}`,{
+                    fetch(`${api}/order/${orderId}`,{
                         method:"PATCH",
                         headers:{
                             "Content-Type":"application/json",
