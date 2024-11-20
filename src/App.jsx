@@ -24,6 +24,7 @@ import MyOrders from './components/client/MyOrders'
 import CategoriesDisplay from './components/admin/CategoriesDisplay'
 import TaxCategoriesDisplay from './components/admin/Taxes'
 import Users from './components/admin/Users'
+import ReviewForm from './components/Product Review/Review form'
 
 
 
@@ -54,6 +55,7 @@ const App = () => {
         <Route path='product/:id' element={<ProductCard />}/>
         <Route path='checkout' element={<Checkout />}/>
         <Route path='my-orders' element={<MyOrders />}/>
+        <Route path='product-review/:id' element={<ReviewForm/>}/>
       </Route>
       <Route path='/login' element={<Login />}/>
       <Route path='/signup' element={<Signup />}/>
