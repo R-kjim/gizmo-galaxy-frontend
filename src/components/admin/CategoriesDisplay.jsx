@@ -2,10 +2,11 @@ import React, { useContext, useState } from 'react';
 import { AppContext } from '../../AppContextProvider';
 import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
+import config from '../../../config';
 
 const CategoriesDisplay = () => {
   const {categories,setCategories}=useContext(AppContext)
- 
+ const {api}=config
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [newCategory, setNewCategory] = useState({ name: '', description: '' });
   const [isEditOpen,setIsEditOpen]=useState(false)
@@ -20,7 +21,7 @@ const CategoriesDisplay = () => {
 
   const handleAddCategory = () => {
     if (newCategory.name.trim() && newCategory.description.trim()) {
-      fetch("http://127.0.0.1:5000/categories",{
+      fetch(`${api}/categories`,{
         method:"POST",
         headers:{
           "Content-Type":"application/json",
@@ -46,7 +47,7 @@ const CategoriesDisplay = () => {
   
   function handleEditCategory(){
     if (newCategory.name.trim() && newCategory.description.trim()) {
-      fetch(`http://127.0.0.1:5000/category/${newCategory.id}`,{
+      fetch(`${api}/category/${newCategory.id}`,{
         method:"PATCH",
         headers:{
           "Content-Type":"application/json",
@@ -83,7 +84,7 @@ const CategoriesDisplay = () => {
       cancelButtonText: 'Cancel'
   }).then((result) => {
       if (result.isConfirmed) {
-        fetch(`http://127.0.0.1:5000/category/${id}`,{
+        fetch(`${api}/${id}`,{
           method:"DELETE",
           headers:{
             "Content-Type":"application/json",

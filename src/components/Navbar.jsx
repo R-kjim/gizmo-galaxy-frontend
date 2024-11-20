@@ -86,20 +86,7 @@ const Navbar = () => {
               >
                 My Orders
               </Link>
-              <Link 
-                to='/login' 
-                className="block text-white font-medium cursor-pointer hover:text-blue-400 hover:bg-gray-700 py-2 px-3 rounded-lg transition-colors duration-200" 
-                onClick={() => setIsHovered(false)}
-              >
-                Personal Information
-              </Link>
-              <Link 
-                to='/login' 
-                className="block text-white font-medium cursor-pointer hover:text-blue-400 hover:bg-gray-700 py-2 px-3 rounded-lg transition-colors duration-200" 
-                onClick={() => setIsHovered(false)}
-              >
-                My Shipping Adress
-              </Link>
+              
               <Link 
                 to='/login' 
                 className="block text-white font-medium cursor-pointer hover:text-blue-400 hover:bg-gray-700 py-2 px-3 rounded-lg transition-colors duration-200" 

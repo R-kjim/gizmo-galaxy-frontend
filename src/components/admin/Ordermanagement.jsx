@@ -2,21 +2,25 @@ import React, { useContext, useEffect, useState } from 'react';
 import { AppContext } from '../../AppContextProvider';
 import Swal from 'sweetalert2';
 import { toast } from 'react-toastify';
+import config from '../../../config';
 
 const OrderManagement = () => {
-    const { allOrders,setAllOrders } = useContext(AppContext);
-    const [filteredOrders, setFilteredOrders] = useState([]);
+    const { allOrders,setAllOrders,filteredOrders, setFilteredOrders } = useContext(AppContext);
     const [selectedOrderId, setSelectedOrderId] = useState(null);
+    const {api}=config
 
-    useEffect(() => {
-        setFilteredOrders(allOrders);
-    }, [allOrders]);
-    console.log(filteredOrders)
+    // useEffect(() => {
+    //     setFilteredOrders(allOrders);
+    // }, [allOrders]);
     const handleFilter = (criteria) => {
         const filtered = allOrders.filter(order => {
             const isStatusMatch = order.status === criteria.status || order.status.includes(criteria.status);
-            const isCustomerMatch = !criteria.customer || order.customer.toLowerCase().includes(criteria.customer.toLowerCase());
-
+            const isCustomerMatch = 
+            !criteria.customer || 
+            (order.user && 
+                `${order.user.first_name} ${order.user.last_name}`.toLowerCase().includes(criteria.customer.toLowerCase())
+            );
+    
             let isDateMatch = true;
             if (criteria.dateRange.start && criteria.dateRange.end) {
                 const startDate = new Date(criteria.dateRange.start);
@@ -24,12 +28,12 @@ const OrderManagement = () => {
                 const orderDate = new Date(order.date);
                 isDateMatch = orderDate >= startDate && orderDate <= endDate;
             }
-
+    
             return isStatusMatch && isCustomerMatch && isDateMatch;
         });
         setFilteredOrders(filtered);
     };
-
+    
     const handleToggleOrder = (orderId) => {
         setSelectedOrderId(prev => (prev === orderId ? null : orderId));
     };
@@ -48,7 +52,7 @@ const OrderManagement = () => {
             })
             .then((result) => {
                 if (result.isConfirmed) {
-                    fetch(`http://127.0.0.1:5000/order/${orderId}`,{
+                    fetch(`${api}/order/${orderId}`,{
                         method:"PATCH",
                         headers:{
                             "Content-Type":"application/json",
@@ -61,6 +65,7 @@ const OrderManagement = () => {
                             return res.json().then(data=>{
                                 let newOrders=allOrders.map((order)=>order.id===orderId?{...order,...data}:order)
                                 setAllOrders(newOrders)
+                                setFilteredOrders(newOrders)
                                 toast.success("Order updated successfully")
                             })
                         }else{return res.json().then(data=>toast.error(data.msg))}
@@ -81,7 +86,7 @@ const OrderManagement = () => {
             })
             .then((result) => {
                 if (result.isConfirmed) {
-                    fetch(`http://127.0.0.1:5000/order/${orderId}`,{
+                    fetch(`${api}/order/${orderId}`,{
                         method:"PATCH",
                         headers:{
                             "Content-Type":"application/json",
@@ -94,6 +99,7 @@ const OrderManagement = () => {
                             return res.json().then(data=>{
                                 let newOrders=allOrders.map((order)=>order.id===orderId?{...order,...data}:order)
                                 setAllOrders(newOrders)
+                                setFilteredOrders(newOrders)
                                 toast.success("Order updated successfully")
                             })
                         }else{return res.json().then(data=>toast.error(data.msg))}
@@ -114,7 +120,7 @@ const OrderManagement = () => {
             })
             .then((result) => {
                 if (result.isConfirmed) {
-                    fetch(`http://127.0.0.1:5000/order/${orderId}`,{
+                    fetch(`${api}/order/${orderId}`,{
                         method:"PATCH",
                         headers:{
                             "Content-Type":"application/json",
@@ -127,6 +133,7 @@ const OrderManagement = () => {
                             return res.json().then(data=>{
                                 let newOrders=allOrders.map((order)=>order.id===orderId?{...order,...data}:order)
                                 setAllOrders(newOrders)
+                                setFilteredOrders(newOrders)
                                 toast.success("Order delivered successfully")
                             })
                         }else{return res.json().then(data=>toast.error(data.msg))}

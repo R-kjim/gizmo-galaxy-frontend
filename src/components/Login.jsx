@@ -3,8 +3,10 @@ import { Formik, Field, Form, ErrorMessage } from 'formik';
 import { toast } from 'react-toastify';
 import { Link, useNavigate } from 'react-router-dom';
 import { AppContext } from '../AppContextProvider';
+import config from '../../config';
 
 const Login = () => {
+  const {api}=config
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
@@ -38,7 +40,7 @@ const Login = () => {
     setSuccessMessage('');
 
     try {
-      const response = await fetch("http://127.0.0.1:5000/login", {
+      const response = await fetch(`${api}/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -48,6 +50,7 @@ const Login = () => {
 
       if (response.ok) {
         const data = await response.json();
+        console.log(data)
         localStorage.setItem("access_Token", data.access_token);
         localStorage.setItem("refresh_Token", data.refresh_token);
         localStorage.setItem("userId", data.user.id);
