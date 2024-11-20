@@ -6,13 +6,11 @@ import AdminNavbar from './AdminNavbar'
 
 const Admin = () => {
   return (
-    <>
+    <div>
     <AdminNavbar />
     <AdminSidebar />
     <div className='ml-64'>
-      
       <Outlet />
-      </div>
       <Footer />
     </div>
 
