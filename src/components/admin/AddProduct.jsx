@@ -44,7 +44,7 @@ const AddProduct = () => {
         "purchase_price":purchasePriceInclTax,
         "selling_price":sellingPriceInclTax,
         "quantity":openingStock,
-        "tax_id":taxCategory,
+        "tax_id":taxCategory
     }
     formData.append("product_data",JSON.stringify(productData)) //appends the product data as json format so we have a single fetch
     Swal.fire({

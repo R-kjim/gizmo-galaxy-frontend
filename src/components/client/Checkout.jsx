@@ -2,14 +2,68 @@ import React, { useState, useEffect, useContext } from 'react';
 import { AppContext } from '../../AppContextProvider';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
+import config from '../../../config';
 
 const Checkout = () => {
   const value=useContext(AppContext)
+  const {api}=config
   const navigate=useNavigate()
   const userData=value.userData
   // State to hold cart items
   const [cartItems, setCartItems] = useState([]);
+  const [newOrder,setNewOrder]=useState({})
 
+  //function to update the state of an order payment
+  function updatePayment(){
+    //fetches an order id and checks for its status
+    function fetch_order(){
+      fetch(`${api}/order/${newOrder.id}`)
+      .then(res=>res.json())
+      .then(data=>{
+        if(data.payment_status==="Processing"){continue_updates()}
+        else{
+          if(data.payment_status==="Failed"){
+            Swal.fire({
+              title: 'Payment Failed',
+              text: 'Unfortunately, your payment could not be processed. Please try again later.',
+              icon: 'error',
+              didClose:()=>{
+                const my_data=value.userData
+                my_data.orders.push(data)
+                value.setUserData(my_data)
+                localStorage.setItem('cart',JSON.stringify([]));
+                value.setCartTotals(0)
+                navigate('/client/my-orders')
+              }
+            });
+            return
+          }
+          if(data.payment_status==="Success"){
+            Swal.fire({
+              title: 'Payment Successful!',
+              text: 'Your payment has been confirmed and your order is complete.',
+              icon: 'success',
+              didClose:()=>{
+                const my_data=value.userData
+                my_data.orders.push(data)
+                value.setUserData(my_data)
+                localStorage.setItem('cart',JSON.stringify([]));
+                value.setCartTotals(0)
+                navigate('/client/my-orders')
+              }
+            });
+            return;
+          }
+        }
+        //function to repeat the action every two seconds
+        function continue_updates(){
+          setTimeout(fetch_order(),2000)
+        }
+      })
+    }
+    fetch_order()
+  }
   // Fetch cart items from local storage on component mount
   useEffect(() => {
     const storedCartItems = localStorage.getItem('cart');
@@ -61,32 +115,64 @@ const Checkout = () => {
         "amount":totalPrice,
         "shipping_address":shipping_address().address,
         "taxes":parseFloat(taxAmount.toFixed(2)),
-        "products":shipping_address().products
+        "products":shipping_address().products,
+        "phone_number":shippingDetails['phone number']
       }
-      
-      fetch("http://127.0.0.1:5000/orders",{
-        method:"POST",
-        headers:{
-          "Content-Type":"application/json",
-          "Authorization":`Bearer ${localStorage.getItem("access_Token")}`
-        },
-        body:JSON.stringify(orderObj)
-      })
-      .then(res=>{
-        if(res.ok){
-          return res.json().then(data=>{
-            const my_data=value.userData
-            my_data.orders.push(data)
-            value.setUserData(my_data)
-            localStorage.setItem('cart',JSON.stringify([]));
-            value.setCartTotals(0)
-            toast.success("order placed successfully")
-            navigate('/client/my-orders')
+      Swal.fire({
+        title: `An MPESA prompt will be sent to ${shippingDetails['phone number']}`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Proceed',
+        cancelButtonText: 'Cancel',
+        allowOutsideClick: false, // Prevent closing while loading
+        allowEscapeKey: false,   // Prevent closing with Escape key
+      }).then((result)=>{
+        if(result.isConfirmed){
+          Swal.fire({
+            title: 'Processing Payment...',
+            text: 'Please wait while we process your payment.',
+            icon: 'info',
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            didOpen:()=>{
+              Swal.showLoading()
+              fetch("http://127.0.0.1:5000/payments",{
+                method:"POST",
+                headers:{
+                  "Content-Type":"application/json",
+                  "Authorization":`Bearer ${localStorage.getItem("access_Token")}`
+                },
+                body:JSON.stringify(orderObj)
+              })
+              .then(res=>{
+                if (res.ok){return res.json().then(data=>{
+                  setNewOrder(data)
+                  updatePayment()
+                })}else{return res.json().then(data=>{
+                  Swal.fire({
+                    title: 'Payment Processing Failed',
+                    text: data.msg || 'An error occurred while processing the payment.',
+                    icon: 'error',
+                    confirmButtonText: 'Try again later'
+                  })})
+                }
+              })
+            }
           })
-        }else{return res.json().then(data=>toast.error(data.msg))}
+        }
       })
+      
+      // .then(res=>{
+      //   return res.json().then(data=>console.log(data))
+      //   // if(res.ok){
+      //   //   return res.json().then(data=>{
+           
+      //   //   })
+      //   // }else{return res.json().then(data=>toast.error(data.msg))}
+      // })
     } else {
-      // console.log(shippingDetails)
       toast.error('Please fill in all fields before placing the order.');
     }
   };
@@ -183,6 +269,7 @@ const Checkout = () => {
             <input
               type="number"
               name="phone number"
+              placeholder='07XXXXXXXX'
               value={shippingDetails["phone number"]}
               onChange={(e) => handleInputChange(e, setShippingDetails)}
               className="w-full p-2 border rounded-md"
@@ -196,7 +283,7 @@ const Checkout = () => {
       <button
         onClick={handlePlaceOrder}
         className="w-full py-2 bg-green-500 text-white font-semibold rounded-md mt-4"
-        disabled={cartItems.length === 0 || !isShippingComplete}
+        // disabled={cartItems.length === 0 || !isShippingComplete}
       >
         Place Order
       </button>
