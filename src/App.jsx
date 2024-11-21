@@ -14,6 +14,7 @@ import Signup from './components/Signup'
 import Cart from './components/client/Cart'
 import ProductManagement from './components/admin/Products'
 import Footer from './components/Homepage/Footer'
+import Analytics from './components/admin/Analytics'
 
 import Checkout from './components/client/Checkout'
 
@@ -24,6 +25,7 @@ import MyOrders from './components/client/MyOrders'
 import CategoriesDisplay from './components/admin/CategoriesDisplay'
 import TaxCategoriesDisplay from './components/admin/Taxes'
 import Users from './components/admin/Users'
+import ForgotPassword from './components/ForgotPassword'
 
 
 
@@ -47,6 +49,7 @@ const App = () => {
         <Route path='product-categories' element={<CategoriesDisplay />}/>
         <Route path='tax-categories' element={<TaxCategoriesDisplay />}/>
         <Route path='users' element={<Users />} />
+        <Route path='analytics' element={<Analytics />}/>
       </Route>
       <Route path='/client' element={<Client />}>
         <Route path='dashboard' element={<DashboardClient />}/>
@@ -58,6 +61,7 @@ const App = () => {
       <Route path='/login' element={<Login />}/>
       <Route path='/signup' element={<Signup />}/>
       <Route path='/cart' element={<Cart />}/>
+      <Route path='/forgot-password' element={<ForgotPassword />}/>
     </Routes>
     </div>
     <Footer />
