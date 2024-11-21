@@ -2,27 +2,21 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Bar } from 'react-chartjs-2';
 import 'chart.js/auto';
-import { format } from 'date-fns';
+import config from '../../../config';
 
-const Analytics = () => {
-  const [analytics, setAnalytics] = useState(null);
+const SalesAnalytics = () => {
+  const [analyticsData, setAnalyticsData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [page, setPage] = useState(1);
-  const [dateRange, setDateRange] = useState({ start: '', end: '' });
+   const {api}=config
+   console.log (analyticsData);
 
   useEffect(() => {
-    const fetchAnalytics = async () => {
+    const fetchSalesAnalytics = async () => {
       try {
         setLoading(true);
-        let url = `http://localhost:5000/sales-analytics?page=${page}`;
-
-        if (dateRange.start && dateRange.end) {
-          url += `&start_date=${dateRange.start}&end_date=${dateRange.end}`;
-        }
-
-        const response = await axios.get(url);
-        setAnalytics(response.data);
+        const response = await axios.get(`${api}/sales-analytics`);
+        setAnalyticsData(response.data);
         setLoading(false);
       } catch (err) {
         setError(err.message);
@@ -30,26 +24,14 @@ const Analytics = () => {
       }
     };
 
-    fetchAnalytics();
-  }, [page, dateRange]);
+    fetchSalesAnalytics();
+  }, []);
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
 
-  const { overall_metrics, product_metrics, sales_trend } = analytics;
+  const { overall_metrics, product_metrics, sales_trend } = analyticsData;
 
-  // Handle pagination
-  const handlePageChange = (newPage) => {
-    if (newPage > 0) setPage(newPage);
-  };
-
-  // Handle date range change
-  const handleDateRangeChange = (e) => {
-    const { name, value } = e.target;
-    setDateRange((prev) => ({ ...prev, [name]: value }));
-  };
-
-  // Prepare data for sales trend bar chart
   const salesTrendData = {
     labels: sales_trend.map((item) => item.date),
     datasets: [
@@ -72,30 +54,7 @@ const Analytics = () => {
 
   return (
     <div className="max-w-6xl mx-auto p-6 space-y-8">
-      <h1 className="text-4xl font-semibold text-center mb-8">Sales Analytics Dashboard</h1>
-
-      {/* Date Range Filter */}
-      <div className="flex justify-between mb-6">
-        <div className="w-1/2">
-          <h2 className="text-xl font-medium mb-2">Filter by Date Range</h2>
-          <div className="flex space-x-4">
-            <input
-              type="date"
-              name="start"
-              value={dateRange.start}
-              onChange={handleDateRangeChange}
-              className="border px-4 py-2 rounded w-full"
-            />
-            <input
-              type="date"
-              name="end"
-              value={dateRange.end}
-              onChange={handleDateRangeChange}
-              className="border px-4 py-2 rounded w-full"
-            />
-          </div>
-        </div>
-      </div>
+      <h1 className="text-4xl font-semibold text-center mb-8">Sales Analytics</h1>
 
       {/* Overall Metrics */}
       <section className="bg-white p-6 rounded-lg shadow-md">
@@ -125,7 +84,7 @@ const Analytics = () => {
           ) : (
             <p>No data available.</p>
           )}
-          
+
           <h3 className="text-lg font-medium">Least Sold Product</h3>
           {product_metrics.least_sold_product ? (
             <p>
@@ -135,23 +94,14 @@ const Analytics = () => {
             <p>No data available.</p>
           )}
 
-          {/* Pagination */}
-          <div className="flex justify-between mt-4">
-            <button
-              onClick={() => handlePageChange(page - 1)}
-              disabled={page <= 1}
-              className="px-4 py-2 bg-blue-500 text-white rounded disabled:opacity-50"
-            >
-              Previous
-            </button>
-            <span className="text-lg">Page {page}</span>
-            <button
-              onClick={() => handlePageChange(page + 1)}
-              className="px-4 py-2 bg-blue-500 text-white rounded"
-            >
-              Next
-            </button>
-          </div>
+          <h3 className="text-lg font-medium">All Products</h3>
+          <ul>
+            {product_metrics.all_products.map((product) => (
+              <li key={product.id}>
+                <strong>{product.name}</strong> - Quantity Sold: {product.total_quantity_sold}, Orders: {product.order_count}
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
 
@@ -165,14 +115,7 @@ const Analytics = () => {
               responsive: true,
               plugins: {
                 legend: {
-                  position: 'bottom', // Moves legend to the bottom of the chart
-                },
-                tooltip: {
-                  callbacks: {
-                    label: (tooltipItem) => {
-                      return `${tooltipItem.dataset.label}: $${tooltipItem.raw.toFixed(2)}`;
-                    },
-                  },
+                  position: 'bottom',
                 },
               },
             }}
@@ -183,4 +126,4 @@ const Analytics = () => {
   );
 };
 
-export default Analytics;
+export default SalesAnalytics;

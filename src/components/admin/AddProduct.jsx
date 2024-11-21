@@ -3,9 +3,11 @@ import { AppContext } from '../../AppContextProvider';
 import { FaTimes } from 'react-icons/fa';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
+import config from '../../../config';
 
 const AddProduct = () => {
   const {taxCategories,categories,setProducts,products}=useContext(AppContext)
+  const {api}=config
   const [productName, setProductName] = useState("");
   const [category, setCategory] = useState("");
   const [description, setDescription] = useState("");
@@ -44,7 +46,7 @@ const AddProduct = () => {
         "purchase_price":purchasePriceInclTax,
         "selling_price":sellingPriceInclTax,
         "quantity":openingStock,
-        "tax_id":taxCategory,
+        "tax_id":taxCategory
     }
     formData.append("product_data",JSON.stringify(productData)) //appends the product data as json format so we have a single fetch
     Swal.fire({
@@ -71,7 +73,7 @@ const AddProduct = () => {
         Swal.showLoading();
         
         // Perform the fetch
-        fetch("http://127.0.0.1:5000/products", {
+        fetch(`${api}/products`, {
           method: "POST",
           headers: {
             "Authorization": `Bearer ${localStorage.getItem("access_Token")}`,
