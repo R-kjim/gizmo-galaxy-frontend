@@ -83,13 +83,13 @@ const Login = () => {
     <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900">
       <div className="w-full max-w-sm mx-auto overflow-hidden bg-white rounded-lg shadow-md dark:bg-gray-800">
         <div className="px-6 py-4">
-          <div className="flex justify-center mx-auto">
+          {/* <div className="flex justify-center mx-auto">
             <img
               className="w-auto h-7 sm:h-8"
               src="https://merakiui.com/images/logo.svg"
               alt="Logo"
             />
-          </div>
+          </div> */}
 
           <h3 className="mt-3 text-xl font-medium text-center text-gray-600 dark:text-gray-200">
             Welcome Back
@@ -161,7 +161,7 @@ const Login = () => {
             Don't have an account?{' '}
           </span>
           <Link
-            to="/register"
+            to="/signup"
             className="mx-2 text-sm font-bold text-blue-500 dark:text-blue-400 hover:underline"
           >
             Register

@@ -64,10 +64,10 @@ const AdminSidebar = () => {
             {!isCollapsed && <Link to="/admin/tax-categories" className="block">Taxes</Link>}
           </li>
           {/* Analytics */}
-          <li className={`${isCollapsed ? "flex justify-center" : ""} flex items-center gap-2 hover:bg-gray-700 p-3 rounded transition duration-200`}>
+          {/* <li className={`${isCollapsed ? "flex justify-center" : ""} flex items-center gap-2 hover:bg-gray-700 p-3 rounded transition duration-200`}>
             <FaChartBar className="text-xl" />
             {!isCollapsed && <a href="/admin/analytics" className="block">View Analytics</a>}
-          </li>
+          </li> */}
 
           {/* Orders */}
           <li className={`${isCollapsed ? "flex justify-center" : ""}`}>
