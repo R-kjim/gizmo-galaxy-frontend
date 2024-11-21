@@ -10,7 +10,10 @@ const Admin = () => {
     <AdminNavbar />
     <AdminSidebar />
     <div className='ml-64'>
+      <div className='min-h-screen'>
       <Outlet />
+      </div>
+      
       <Footer />
     </div>
 

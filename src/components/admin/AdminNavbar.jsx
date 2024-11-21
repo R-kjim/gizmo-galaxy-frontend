@@ -1,14 +1,16 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { AppContext } from "../../AppContextProvider";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
+  const {userData,setUserData}=useContext(AppContext)
+  const navigate=useNavigate()
   return (
-    <nav className="bg-gray-800 text-white flex-shrink-0 w-full">
-      <div className="px-4 py-3">
+<nav className="bg-gray-900 text-white flex-shrink-0 w-full sticky top-0 z-10">      <div className="px-4 py-3">
         <div className="flex items-center justify-between">
           {/* Brand Name */}
-          <div className="text-xl font-extrabold">
+          <div className="text-3xl font-extrabold ml-64">
             <a href="#">Gizmo Galaxy</a>
           </div>
 
@@ -33,7 +35,7 @@ const Navbar = () => {
                   d="M5.121 17.804A10.97 10.97 0 0112 15c2.05 0 3.943.615 5.52 1.66M15 12a3 3 0 10-6 0 3 3 0 006 0zm-3-9a9 9 0 100 18 9 9 0 000-18z"
                 />
               </svg>
-              Logged In
+              {userData.first_name?`${userData.first_name} ${userData.last_name}`:null}
             </button>
 
             {/* Dropdown Menu */}
@@ -42,7 +44,9 @@ const Navbar = () => {
                 <ul>
                   <li>
                     <button
-                      onClick={() => console.log("Logging out")}
+                      onClick={() => {navigate("/");localStorage.removeItem("access_Token");
+                        localStorage.removeItem("refresh_Token");
+                        localStorage.removeItem("userId");setUserData({})}}
                       className="flex items-center w-full px-3 py-2 text-sm text-gray-800 transition-colors duration-200 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600"
                     >
                       <svg
