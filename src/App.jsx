@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Homepage from './components/Homepage'
@@ -28,15 +28,17 @@ import Users from './components/admin/Users'
 import ReviewForm from './components/Product Review/Review form'
 
 import ForgotPassword from './components/ForgotPassword'
+import { AppContext } from './AppContextProvider'
 
 
 
 
 const App = () => {
+  const {userData}=useContext(AppContext)
   return (
     <div>
     <ToastContainer />
-    
+    {!userData.email && <Navbar />}
     {/* <Routes>
     <Route path='/' element={<Homepage />}/>
 

@@ -6,7 +6,9 @@ const Client = () => {
   return (
     <div>
       <Navbar/>
+      <div className='mt-16'>
       <Outlet />
+      </div>
     </div>
   )
 }

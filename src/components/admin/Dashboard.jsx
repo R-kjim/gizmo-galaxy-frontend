@@ -26,8 +26,8 @@ const Dashboard = () => {
 };
 
 const Header = () => (
-    <header className="flex items-center justify-between bg-gray-900 text-white p-4">
-        <h1 className="text-xl font-semibold">Welcome, Admin</h1>
+    <header className="flex items-center justify-between p-4">
+        <h1 className="text-xl font-semibold">Dashboard</h1>
         <div className="flex space-x-4">
             {/* <Button color="bg-blue-600" label="Filter by Date" />
             <Button color="bg-green-600" label="POS" />
