@@ -42,8 +42,8 @@ const Button = ({ color, label }) => (
 
 const MetricsGrid = () => {
     const dummyMetricsData = [
-        { label: "Total Sales", value: "KSh 1,000,000", bgColor: "bg-blue-500" },
-        { label: "Net Profit", value: "KSh 200,000", bgColor: "bg-green-500" },
+        { label: "Total Sales", value: "KSh 200", bgColor: "bg-blue-500" },
+        { label: "Net Profit", value: "KSh 20", bgColor: "bg-green-500" },
         // { label: "Invoice Due", value: "KSh 50,000", bgColor: "bg-yellow-500" },
         // { label: "Total Sell Return", value: "KSh 20,000", bgColor: "bg-red-500" },
         // { label: "Total Purchase", value: "KSh 500,000", bgColor: "bg-teal-500" },
