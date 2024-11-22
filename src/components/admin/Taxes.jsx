@@ -25,7 +25,7 @@ const TaxCategoriesDisplay = () => {
 
   const handleAddTaxCategory = () => {
     if (newTaxCategory.name.trim() && newTaxCategory.value.trim()) {
-      fetch("${api}/tax-category", {
+      fetch(`${api}/tax-category`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
