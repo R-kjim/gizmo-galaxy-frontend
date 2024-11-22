@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import config from '../../../config';
 import { Bar } from 'react-chartjs-2';
 import 'chart.js/auto';
 
 const SalesAnalytics = () => {
+  const {api}=config
+
   const [analyticsData, setAnalyticsData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -12,7 +15,7 @@ const SalesAnalytics = () => {
   useEffect(() => {
     const fetchAnalyticsData = async () => {
       try {
-        const response = await axios.get(`/sales-analytics`); // Update API base URL if needed
+        const response = await axios.get(`${api}/sales-analytics`); // Update API base URL if needed
         setAnalyticsData(response.data);
         setLoading(false);
       } catch (err) {
