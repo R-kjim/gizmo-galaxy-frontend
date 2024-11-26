@@ -14,6 +14,7 @@ import Signup from './components/Signup'
 import Cart from './components/client/Cart'
 import ProductManagement from './components/admin/Products'
 import Footer from './components/Homepage/Footer'
+import Analytics from './components/admin/Analytics'
 
 import Checkout from './components/client/Checkout'
 
@@ -54,6 +55,7 @@ const App = () => {
         <Route path='product-categories' element={<CategoriesDisplay />}/>
         <Route path='tax-categories' element={<TaxCategoriesDisplay />}/>
         <Route path='users' element={<Users />} />
+        <Route path='analytics' element={<Analytics />}/>
       </Route>
       <Route path='/client' element={<Client />}>
         <Route path='dashboard' element={<DashboardClient />}/>
